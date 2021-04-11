@@ -1,10 +1,7 @@
 from mongoengine import *
-from mongoengine.connection import connect
-from mongoengine.document import Document, DynamicDocument
 from mongoengine.fields import (
     BooleanField, DateField, IntField, ListField, ReferenceField, StringField
 )
-
 from flask_mongoengine import MongoEngine
 
 db = MongoEngine()
@@ -27,72 +24,7 @@ class Artist(db.Document):
             'url': self.url,
             'header_image_url': self.header_image_url,
             'image_url': self.image_url,
-            'albums': [
-                {
-                    'id': album.id,
-                    'name': album.name,
-                    'name_with_artist': album.name_with_artist,
-                    'full_title': album.full_title,
-                    'type': album.type,
-                    'release_date': album.release_date,
-                    'url': album.url,
-                    'cover_art_thumbnail_url': album.cover_art_thumbnail_url,
-                    'cover_art_url': album.cover_art_url,
-                    'tracks': [
-                        {
-                            'id': track.id,
-                            'apple_music_id': track.apple_music_id,
-                            'number': track.number,
-                            'type': track.type,
-                            'full_title': track.full_title,
-                            'title': track.title,
-                            'description': track.description,
-                            'release_date': track.release_date,
-                            'url': track.url,
-                            'header_image_thumbnail_url': track.header_image_thumbnail_url,
-                            'header_image_url': track.header_image_url,
-                            'song_art_image_thumbnail_url': track.song_art_image_thumbnail_url,
-                            'song_art_image_url': track.song_art_image_url,
-                            'lyrics': track.lyrics,
-                            'lyrics_state': track.lyrics_state,
-                            'embed_content': track.embed_content,
-                            'recording_location': track.recording_location,
-                            'featured_video': track.featured_video,
-                            'producers': [
-                                {
-                                    'id': producer.id,
-                                    'name': producer.name,
-                                    'url': producer.url,
-                                    'header_image_url': producer.header_image_url,
-                                    'image_url': producer.image_url
-                                } for producer in track.producers],
-                            'writers': [
-                                {
-                                    'id': writer.id,
-                                    'name': writer.name,
-                                    'url': writer.url,
-                                    'header_image_url': writer.header_image_url,
-                                    'image_url': writer.image_url
-                                } for writer in track.writers],
-                            'features': [
-                                {
-                                    'id': feature.id,
-                                    'name': feature.name,
-                                    'url': feature.url,
-                                    'header_image_url': feature.header_image_url,
-                                    'image_url': feature.image_url
-                                } for feature in track.features],
-                            'contributors': [
-                                {
-                                    'id': contributor.id,
-                                    'name': contributor.name,
-                                    'label': contributor.label,
-                                    'url': contributor.url,
-                                    'header_image_url': contributor.header_image_url,
-                                    'image_url': contributor.image_url
-                                } for contributor in track.contributors]
-                        } for track in album.tracks]
-                } for album in self.albums]
+            'albums': [album.album_doc() for album in self.albums]
         }
 
 
@@ -121,60 +53,7 @@ class Album(db.Document):
             'url': self.url,
             'cover_art_thumbnail_url': self.cover_art_thumbnail_url,
             'cover_art_url': self.cover_art_url,
-            'tracks': [
-                {
-                    'id': track.id,
-                    'apple_music_id': track.apple_music_id,
-                    'number': track.number,
-                    'type': track.type,
-                    'full_title': track.full_title,
-                    'title': track.title,
-                    'description': track.description,
-                    'release_date': track.release_date,
-                    'url': track.url,
-                    'header_image_thumbnail_url': track.header_image_thumbnail_url,
-                    'header_image_url': track.header_image_url,
-                    'song_art_image_thumbnail_url': track.song_art_image_thumbnail_url,
-                    'song_art_image_url': track.song_art_image_url,
-                    'lyrics': track.lyrics,
-                    'lyrics_state': track.lyrics_state,
-                    'embed_content': track.embed_content,
-                    'recording_location': track.recording_location,
-                    'featured_video': track.featured_video,
-                    'producers': [
-                        {
-                            'id': producer.id,
-                            'name': producer.name,
-                            'url': producer.url,
-                            'header_image_url': producer.header_image_url,
-                            'image_url': producer.image_url
-                        } for producer in track.producers],
-                    'writers': [
-                        {
-                            'id': writer.id,
-                            'name': writer.name,
-                            'url': writer.url,
-                            'header_image_url': writer.header_image_url,
-                            'image_url': writer.image_url
-                        } for writer in track.writers],
-                    'features': [
-                        {
-                            'id': feature.id,
-                            'name': feature.name,
-                            'url': feature.url,
-                            'header_image_url': feature.header_image_url,
-                            'image_url': feature.image_url
-                        } for feature in track.features],
-                    'contributors': [
-                        {
-                            'id': contributor.id,
-                            'name': contributor.name,
-                            'label': contributor.label,
-                            'url': contributor.url,
-                            'header_image_url': contributor.header_image_url,
-                            'image_url': contributor.image_url
-                        } for contributor in track.contributors]
-                } for track in self.tracks]
+            'tracks': [track.track_doc() for track in self.tracks]
         }
 
 
@@ -204,6 +83,32 @@ class Track(db.DynamicDocument):
 
     meta = {'collection': 'track'}
 
+    def track_doc(self):
+        return {
+            'id': self.id,
+            'apple_music_id': self.apple_music_id,
+            'number': self.number,
+            'type': self.type,
+            'full_title': self.full_title,
+            'title': self.title,
+            'description': self.description,
+            'release_date': self.release_date,
+            'url': self.url,
+            'header_image_thumbnail_url': self.header_image_thumbnail_url,
+            'header_image_url': self.header_image_url,
+            'song_art_image_thumbnail_url': self.song_art_image_thumbnail_url,
+            'song_art_image_url': self.song_art_image_url,
+            'lyrics': self.lyrics,
+            'lyrics_state': self.lyrics_state,
+            'embed_content': self.embed_content,
+            'recording_location': self.recording_location,
+            'featured_video': self.featured_video,
+            'producers': [producer.producer_doc() for producer in self.producers],
+            'writers': [writer.writer_doc() for writer in self.writers],
+            'features': [feature.feature_doc() for feature in self.features],
+            'contributors': [contributor.contributor_doc() for contributor in self.contributors]
+        }
+
 
 class Feature(db.DynamicDocument):
     name = StringField()
@@ -213,6 +118,15 @@ class Feature(db.DynamicDocument):
     image_url = StringField()
 
     meta = {'collection': 'feature'}
+
+    def feature_doc(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'url': self.url,
+            'header_image_url': self.header_image_url,
+            'image_url': self.image_url
+        }
 
 
 class Producer(db.DynamicDocument):
@@ -224,6 +138,15 @@ class Producer(db.DynamicDocument):
 
     meta = {'collection': 'producer'}
 
+    def producer_doc(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'url': self.url,
+            'header_image_url': self.header_image_url,
+            'image_url': self.image_url
+        }
+
 
 class Writer(db.DynamicDocument):
     name = StringField()
@@ -233,6 +156,15 @@ class Writer(db.DynamicDocument):
     image_url = StringField()
 
     meta = {'collection': 'writer'}
+
+    def writer_doc(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'url': self.url,
+            'header_image_url': self.header_image_url,
+            'image_url': self.image_url
+        }
 
 
 class Contributor(db.DynamicDocument):
@@ -245,6 +177,12 @@ class Contributor(db.DynamicDocument):
 
     meta = {'collection': 'contributor'}
 
-
-# out = Artist.objects().paginate(2, 10)
-# print(out)
+    def contributor_doc(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'label': self.label,
+            'url': self.url,
+            'header_image_url': self.header_image_url,
+            'image_url': self.image_url
+        }

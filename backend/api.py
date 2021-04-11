@@ -1,3 +1,4 @@
+from os import write
 import uuid
 from flask import Flask, request, jsonify, make_response, redirect
 from flask.helpers import url_for
@@ -41,13 +42,13 @@ def index():
 
 @app.route('/api')
 def api():
-    return {'API': 'Documentation'}
+    return {'API': 'Running'}
 
 
 @app.route('/api/artists/page/<number>')
 def get_artists(number):
     artists = Artist.objects.paginate(page=int(number), per_page=5)
-    return jsonify([artist.artistDoc() for artist in artists.items])
+    return jsonify([artist.artist_doc() for artist in artists.items])
 
 
 @app.route('/api/artist/<id>')
@@ -62,8 +63,35 @@ def get_album(id):
     return jsonify(album.album_doc())
 
 
+@app.route('/api/track/<id>')
+def get_track(id):
+    track = Track.objects.get(id=id)
+    return jsonify(track.track_doc())
+
+
+@app.route('/api/producer/<id>')
+def get_producer(id):
+    producer = Producer.objects.get(id=id)
+    return jsonify(producer.producer_doc())
+
+
+@app.route('/api/writer/<id>')
+def get_writer(id):
+    writer = Writer.objects.get(id=id)
+    return jsonify(writer.writer_doc())
+
+
+@app.route('/api/feature/<id>')
+def get_feature(id):
+    feature = Feature.objects.get(id=id)
+    return jsonify(feature.feature_doc())
+
+
+@app.route('/api/contributor/<id>')
+def get_contributor(id):
+    contributor = Contributor.objects.get(id=id)
+    return jsonify(contributor.contributor_doc())
+
+
 if __name__ == '__main__':
     app.run(debug=True)
-
-# artists = Artist.objects.paginate(page=1, per_page=5)
-# print([artist.artistDoc() for artist in artists.items])
