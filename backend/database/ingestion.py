@@ -18,7 +18,7 @@ artist_files = os.listdir('../data/collection')
 # print(artist_files)
 artists = [pickle.load(open(f'../data/collection/{filename}', 'rb'))
            for filename in artist_files]
-print(artists[0].keys())
+# print(artists[0].keys())
 
 # %%
 
@@ -40,7 +40,7 @@ def upsert_other_artists(other_artists, Model):
         to_drop = ['api_path', 'is_meme_verified', 'is_verified', 'iq']
         artist = dropDictKeys(artist, to_drop)
         # print(artist)
-        Model(**artist).save()
+        artist = Model(**artist).save()
         artists.append(artist)
     return artists
 
@@ -103,11 +103,12 @@ for i, artist in enumerate(artists):
             track['features'] = features
             track['writers'] = writers
             track['contributors'] = contributors
-            Track(**track).save()
+            # print(track.keys())
+            track = Track(**track).save()
             all_tracks.append(track)
 
         album['tracks'] = all_tracks
-        Album(**album).save()
+        album = Album(**album).save()
         all_albums.append(album)
 
     artist['albums'] = all_albums
