@@ -1,1 +1,1 @@
-# Angular-Python-Sentiment-analysis-music-lirics-app
+# Angular-Python-Sentiment-analysis-music-lyrics-app
