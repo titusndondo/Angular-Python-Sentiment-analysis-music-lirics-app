@@ -1,3 +1,6 @@
+/.vscode
 /backend/data/collection
 /backend/data/documents
 /backend/database/__pycache__
+/backend/.cache
+/backend/data/audio-features/.cache

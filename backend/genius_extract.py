@@ -10,7 +10,6 @@ from datetime import datetime
 
 import lyricsgenius
 import json
-import time
 
 import requests
 from bs4 import BeautifulSoup
@@ -34,13 +33,15 @@ def dropDictKeys(dict, keys):
 
 def keepDictKeys(dict, keys):
     new_dict = {}
-    for key in keys:
-        new_dict[key] = dict[key]
-    return new_dict
+    if dict:
+        for key in keys:
+            new_dict[key] = dict[key]
+        return new_dict
+    return {}
 
 
 # %%
-def getArtistData(artist_name):
+def get_genius_data(artist_name):
 
     # print starting time
     print(f"Starting: {datetime.now()}")
@@ -293,11 +294,11 @@ top_artists = top_100_songs['Artist(s)'].map(lambda x: x.split('featuring')[0]).
 for i, artist_name in enumerate(['Tatiana Manaois', 'Nicki Minaj', 'Jhene Aiko'] + top_artists):
     print(i + 1, artist_name)
     try:
-        artist = getArtistData(artist_name)
+        artist = get_genius_data(artist_name)
 
         try:
             pickle.dump(artist, open(
-                f"collection/{artist['name'].replace('*', '')}.pkl", 'wb'))
+                f"data/collection/{artist['name'].replace('*', '')}.pkl", 'wb'))
         except Exception as e:
             print(e)
 

@@ -1,18 +1,21 @@
 from mongoengine import *
 from mongoengine.fields import (
-    BooleanField, DateField, IntField, ListField, ReferenceField, StringField
+    BooleanField, DateField, FloatField, IntField, ListField, ReferenceField, StringField
 )
 from flask_mongoengine import MongoEngine
 
 db = MongoEngine()
 
 
-class Artist(db.Document):
+class Artist(db.DynamicDocument):
     header_image_url = StringField()
     id = IntField(primary_key=True)
     image_url = StringField()
     name = StringField()
     url = StringField()
+    followers = FloatField()
+    popularity = FloatField()
+    genres = ListField()
     albums = ListField(ReferenceField('Album'))
 
     meta = {'collection': 'artist'}
@@ -24,11 +27,14 @@ class Artist(db.Document):
             'url': self.url,
             'header_image_url': self.header_image_url,
             'image_url': self.image_url,
+            'followers': self.followers,
+            'popularity': self.popularity,
+            'genres': self.genres,
             'albums': [album.album_doc() for album in self.albums]
         }
 
 
-class Album(db.Document):
+class Album(db.DynamicDocument):
     id = IntField(primary_key=True)
     type = StringField()
     full_title = StringField(required=True)
@@ -39,6 +45,8 @@ class Album(db.Document):
     cover_art_thumbnail_url = StringField()
     cover_art_url = StringField()
     tracks = ListField(ReferenceField('Track'))
+    genres = ListField()
+    popularity = FloatField()
 
     meta = {'collection': 'album'}
 
@@ -53,7 +61,9 @@ class Album(db.Document):
             'url': self.url,
             'cover_art_thumbnail_url': self.cover_art_thumbnail_url,
             'cover_art_url': self.cover_art_url,
-            'tracks': [track.track_doc() for track in self.tracks]
+            'tracks': [track.track_doc() for track in self.tracks],
+            'genres': self.genres,
+            'popularity': self.popularity
         }
 
 
@@ -64,6 +74,8 @@ class Track(db.DynamicDocument):
     type = StringField()
     full_title = StringField()
     title = StringField()
+    popularity = FloatField()
+    duration_ms = IntField()
     description = StringField()
     release_date = StringField()
     url = StringField()
@@ -80,6 +92,7 @@ class Track(db.DynamicDocument):
     writers = ListField(ReferenceField('Writer'))
     features = ListField(ReferenceField('Feature'))
     contributors = ListField(ReferenceField('Contributor'))
+    audio_features = ReferenceField('AudioFeatures')
 
     meta = {'collection': 'track'}
 
@@ -91,6 +104,8 @@ class Track(db.DynamicDocument):
             'type': self.type,
             'full_title': self.full_title,
             'title': self.title,
+            'popularity': self.popularity,
+            'duration_ms': self.duration_ms,
             'description': self.description,
             'release_date': self.release_date,
             'url': self.url,
@@ -106,7 +121,45 @@ class Track(db.DynamicDocument):
             'producers': [producer.producer_doc() for producer in self.producers],
             'writers': [writer.writer_doc() for writer in self.writers],
             'features': [feature.feature_doc() for feature in self.features],
-            'contributors': [contributor.contributor_doc() for contributor in self.contributors]
+            'contributors': [contributor.contributor_doc() for contributor in self.contributors],
+            'audio_features': self.audio_features.af_doc()
+        }
+
+
+class AudioFeatures(db.DynamicDocument):
+    id = IntField(primary_key=True)
+    danceability = FloatField()
+    energy = FloatField()
+    key = FloatField()
+    loudness = FloatField()
+    mode = FloatField()
+    speechiness = FloatField()
+    acousticness = FloatField()
+    instrumentalness = FloatField()
+    liveness = FloatField()
+    valence = FloatField()
+    tempo = FloatField()
+
+    meta = {'collection': 'audio_features'}
+
+    def af_doc(self):
+        return {
+            'danceability': self.danceability,
+            'energy': self.energy,
+            'key': self.key,
+            'loudness': self.loudness,
+            'mode': self.mode,
+            'speechiness': self.speechiness,
+            'acousticness': self.acousticness,
+            'instrumentalness': self.instrumentalness,
+            'liveness': self.liveness,
+            'valence': self.valence,
+            'tempo': self.tempo
+        }
+
+    def af_doc(self):
+        return {
+
         }
 
 

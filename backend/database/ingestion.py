@@ -1,11 +1,12 @@
 import pickle
 import os
+import uuid
 
 from mongoengine.connection import connect
 from models import (
     Artist,
     Album,
-    Track, Producer, Writer, Contributor, Feature
+    Track, Producer, Writer, Contributor, Feature, AudioFeatures
 )
 
 connect('lytics_db')
@@ -14,9 +15,9 @@ for model in [Artist, Album, Track, Producer, Writer, Contributor, Feature]:
     res = model.objects()
     res.delete()
 
-artist_files = os.listdir('../data/collection')
+artist_files = os.listdir('../data/documents')
 # print(artist_files)
-artists = [pickle.load(open(f'../data/collection/{filename}', 'rb'))
+artists = [pickle.load(open(f'../data/documents/{filename}', 'rb'))
            for filename in artist_files]
 # print(artists[0].keys())
 
@@ -68,7 +69,7 @@ for i, artist in enumerate(artists):
 
         all_tracks = []
         for track in tracks:
-
+            # print(track['audio_features'])
             track['description'] = track['description']['plain']
 
             producer_artists = track['producer_artists']
@@ -103,7 +104,15 @@ for i, artist in enumerate(artists):
             track['features'] = features
             track['writers'] = writers
             track['contributors'] = contributors
-            # print(track.keys())
+
+            afs = track.get('audio_features') or {}
+            print(afs)
+            afs['id'] = track['id']
+            audio_features = AudioFeatures(**afs).save()
+
+            track['audio_features'] = audio_features
+
+            # print(track['audio_features'])
             track = Track(**track).save()
             all_tracks.append(track)
 
