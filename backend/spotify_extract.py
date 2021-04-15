@@ -88,14 +88,19 @@ def get_spotify_data(artist):
 # %%
 
 
+# print([filename[:-4] for filename in os.listdir('./data/documents')])
+
 artist_files = os.listdir('./data/collection')
 artists = [pickle.load(open(f'./data/collection/{filename}', 'rb'))
            for filename in artist_files]
 
 for i, artist in enumerate(artists):
     # print(artist['name'])
-    # if artist['name'] not in [filename[:-4] for filename in os.listdir('./data/documents')]:
-    artist = get_spotify_data(artist)
-    pickle.dump(artist,
-                open(f"./data/documents/{artist['name']}.pkl", 'wb'))
     print(i, artist['name'])
+    if artist['name'] not in [filename[:-4] for filename in os.listdir('./data/documents')]:
+        try:
+            artist = get_spotify_data(artist)
+            pickle.dump(artist,
+                        open(f"./data/documents/{artist['name']}.pkl", 'wb'))
+        except:
+            pass
