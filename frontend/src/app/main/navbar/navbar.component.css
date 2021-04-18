@@ -1,0 +1,40 @@
+.nav-row {
+  width: 95%;
+}
+
+#logo {
+  width: 50%;
+  color: #f1f1f1;
+}
+
+.toggler-icon {
+  cursor: pointer;
+}
+
+.toggler-icon:hover {
+  color: #00727f;
+}
+
+.toggler-icon,
+.user-settings-icon {
+  color: #f1f1f1;
+  background-color: inherit;
+  border: none;
+  /* padding: 0; */
+}
+
+.search-input {
+  background-color: #f1f1f1;
+}
+
+#search-artists {
+  position: relative;
+  width: 50%;
+}
+
+.btn-search {
+  position: absolute;
+  width: 30%;
+  right: -1%;
+  color: #f1f1f1;
+}

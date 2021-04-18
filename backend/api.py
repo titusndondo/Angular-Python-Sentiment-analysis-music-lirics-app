@@ -48,7 +48,37 @@ def api():
 @app.route('/api/artists/page/<number>')
 def get_artists(number):
     artists = Artist.objects.paginate(page=int(number), per_page=5)
-    return jsonify([artist.artist_doc() for artist in artists.items])
+    response = []
+
+    for artist in artists.items:
+
+        artist = artist.artist_doc()
+
+        artist_page = {}
+        artist_page['name'] = artist['name']
+        artist_page['image_url'] = artist['image_url']
+        artist_page['albums'] = len([album for album in artist['albums']])
+
+        sentiments = {
+            'name': '',
+            'series': None
+        }
+        series = [{'name': 'sad', 'value': 0}, {'name': 'angry', 'value': 0},
+                  {'name': 'happy', 'value': 0}, {'name': 'relaxed', 'value': 0}]
+
+        counter = 0
+        for sent in series:
+            for album in artist['albums']:
+                for track in album['tracks']:
+                    if track['sentiment']['sentiment'] == sent['name']:
+                        sent['value'] += 1
+                        counter += 1
+        sentiments['series'] = series
+        artist_page['sentiments'] = sentiments
+        artist_page['tracks'] = counter
+
+        response.append(artist_page)
+    return jsonify(response)
 
 
 @app.route('/api/artist/<id>')

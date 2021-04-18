@@ -1,0 +1,79 @@
+#sidebar {
+  position: absolute;
+  width: 275px;
+  height: 900px;
+  background-color: #1b1e27;
+  border-radius: 5px;
+  z-index: 10000;
+}
+
+.close-sidebar {
+  position: absolute;
+  right: 4%;
+  top: 1.5%;
+  color: #f1f1f1;
+  cursor: pointer;
+}
+
+.close-sidebar:hover {
+  color: #00727f;
+}
+
+.profile {
+  width: 100%;
+  transform: translateY(5%);
+}
+
+.profile-col {
+  border-bottom: 1px dotted #f1f1f1;
+}
+
+.img-ellipse,
+.profile-link {
+  width: 115px;
+}
+
+.img-ellipse {
+  height: 115px;
+  background: url(https://images.unsplash.com/photo-1610737249253-1405407a33ad?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG11c2ljJTIwbG92ZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60),
+    #1b1e27;
+  border: 5px solid #f1f1f1;
+  border-radius: 10rem;
+}
+
+.profile-link {
+  background: #00727f;
+  border-radius: 15px;
+}
+
+.list-group-item {
+  padding: 0;
+  background-color: #1b1e27;
+  width: 80%;
+}
+
+.right-lgic,
+.left-lgic {
+  background-color: #21242f;
+  padding: 0.6rem;
+}
+
+.middle-lgic {
+  width: 5px !important;
+}
+
+.list-group-item:hover .left-lgic {
+  background-color: #00727f;
+}
+
+.list-group-item:hover .right-lgic {
+  background-color: #00727f;
+}
+
+.right-lgic {
+  border-radius: 25px 0px 0px 25px;
+}
+
+.left-lgic {
+  border-radius: 0px 25px 25px 0px;
+}

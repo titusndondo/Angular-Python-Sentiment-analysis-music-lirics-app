@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+  background-color: #21242f;
+}
+
+.navbar-dark,
+.bg-dark {
+  background-color: #030407 !important;
+}
+
+.btn-outline-dark {
+  background-color: #21242f !important;
+}
+
+.form-control {
+  border-radius: 1.5rem;
+}
+
+.btn {
+  border-radius: 1.5rem;
+}

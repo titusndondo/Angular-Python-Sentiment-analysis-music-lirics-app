@@ -1,6 +1,7 @@
+from collections import defaultdict
 from mongoengine import *
 from mongoengine.fields import (
-    BooleanField, DateField, FloatField, IntField, ListField, ReferenceField, StringField
+    BooleanField, DateField, DictField, FloatField, IntField, ListField, ReferenceField, StringField
 )
 from flask_mongoengine import MongoEngine
 
@@ -84,6 +85,7 @@ class Track(db.DynamicDocument):
     song_art_image_thumbnail_url = StringField()
     song_art_image_url = StringField()
     lyrics = StringField()
+    sentiment = DictField(default={'lyrics': None, 'sentiment': None})
     lyrics_state = StringField()
     embed_content = StringField()
     recording_location = StringField()
@@ -91,8 +93,20 @@ class Track(db.DynamicDocument):
     producers = ListField(ReferenceField('Producer'))
     writers = ListField(ReferenceField('Writer'))
     features = ListField(ReferenceField('Feature'))
-    contributors = ListField(ReferenceField('Contributor'))
-    audio_features = ReferenceField('AudioFeatures')
+    contributors = ListField(ReferenceField('Contributor')),
+    audio_features = DictField(default={
+        'danceability': None,
+        'energy': None,
+        'key': None,
+        'loudness': None,
+        'mode': None,
+        'speechiness': None,
+        'acousticness': None,
+        'instrumentalness': None,
+        'liveness': None,
+        'valence': None,
+        'tempo': None
+    })
 
     meta = {'collection': 'track'}
 
@@ -114,6 +128,7 @@ class Track(db.DynamicDocument):
             'song_art_image_thumbnail_url': self.song_art_image_thumbnail_url,
             'song_art_image_url': self.song_art_image_url,
             'lyrics': self.lyrics,
+            'sentiment': self.sentiment,
             'lyrics_state': self.lyrics_state,
             'embed_content': self.embed_content,
             'recording_location': self.recording_location,
@@ -122,44 +137,7 @@ class Track(db.DynamicDocument):
             'writers': [writer.writer_doc() for writer in self.writers],
             'features': [feature.feature_doc() for feature in self.features],
             'contributors': [contributor.contributor_doc() for contributor in self.contributors],
-            'audio_features': self.audio_features.af_doc()
-        }
-
-
-class AudioFeatures(db.DynamicDocument):
-    id = IntField(primary_key=True)
-    danceability = FloatField()
-    energy = FloatField()
-    key = FloatField()
-    loudness = FloatField()
-    mode = FloatField()
-    speechiness = FloatField()
-    acousticness = FloatField()
-    instrumentalness = FloatField()
-    liveness = FloatField()
-    valence = FloatField()
-    tempo = FloatField()
-
-    meta = {'collection': 'audio_features'}
-
-    def af_doc(self):
-        return {
-            'danceability': self.danceability,
-            'energy': self.energy,
-            'key': self.key,
-            'loudness': self.loudness,
-            'mode': self.mode,
-            'speechiness': self.speechiness,
-            'acousticness': self.acousticness,
-            'instrumentalness': self.instrumentalness,
-            'liveness': self.liveness,
-            'valence': self.valence,
-            'tempo': self.tempo
-        }
-
-    def af_doc(self):
-        return {
-
+            'audio_features': self.audio_features
         }
 
 

@@ -1,15 +1,26 @@
-import pickle
-import os
-import uuid
+# %%
 
+import os
+import sys
+import pickle
+import pandas as pd
 from mongoengine.connection import connect
 from models import (
     Artist,
     Album,
-    Track, Producer, Writer, Contributor, Feature, AudioFeatures
+    Track, Producer, Writer, Contributor, Feature
 )
+sys.path.append(r'../eda')
+
+
+# %%
+sentiments_model = pickle.load(open('../eda/models/LR_clf.pkl', 'rb'))
+vec = pickle.load(open('../eda/models/vectorizer.pkl', 'rb'))
+# %%
+
 
 connect('lytics_db')
+
 
 for model in [Artist, Album, Track, Producer, Writer, Contributor, Feature]:
     res = model.objects()
@@ -86,17 +97,11 @@ for i, artist in enumerate(artists):
             features = upsert_other_artists(featured_artists, Feature)
 
             contributor_artists = []
-            # print(track['title'], len(custom_performances))
             for perfomance in custom_performances:
                 _artists = perfomance['artists']
-                # _artists['label'] = perfomance['label']
-                # print(perfomance['label'])
                 for art in _artists:
-                    # print(art)
                     art['label'] = perfomance['label']
                     contributor_artists.append(art)
-                # print(' ')
-            # print(contributor_artists)
             contributors = upsert_other_artists(
                 contributor_artists, Contributor)
 
@@ -105,14 +110,18 @@ for i, artist in enumerate(artists):
             track['writers'] = writers
             track['contributors'] = contributors
 
-            afs = track.get('audio_features') or {}
-            print(afs)
-            afs['id'] = track['id']
-            audio_features = AudioFeatures(**afs).save()
+            from utilities import preProcessing
+            if track.get('lyrics'):
+                processed_lyrics = preProcessing(track['lyrics'])
+                track['sentiment'] = {
+                    'lyrics': processed_lyrics,
+                    'sentiment': sentiments_model.predict(vec.transform(pd.Series(processed_lyrics)))[0]
+                }
+                # print(track.keys())
 
-            track['audio_features'] = audio_features
+            if track.get('audio_features'):
+                track['audio_features'] = track.get('audio_features')
 
-            # print(track['audio_features'])
             track = Track(**track).save()
             all_tracks.append(track)
 
