@@ -3,3 +3,39 @@
   height: 1024px;
   background: #030407;
 }
+
+#container {
+  width: 95%;
+  height: 100%;
+
+  background: linear-gradient(
+    180deg,
+    #21242f 53.46%,
+    rgba(33, 36, 47, 0) 87.83%
+  );
+  border-radius: 0 25px 25px 0;
+}
+
+#content {
+  width: 90%;
+  height: 900px;
+  /* background-color: coral; */
+  /* border: 1px dotted cornsilk; */
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: #f1f1f1;
+}
+
+.breadcrumb-item.active {
+  color: #00727f;
+}
+
+.bci {
+  color: #f1f1f1;
+  cursor: pointer;
+}
+
+.bci:hover {
+  color: #00727f;
+}

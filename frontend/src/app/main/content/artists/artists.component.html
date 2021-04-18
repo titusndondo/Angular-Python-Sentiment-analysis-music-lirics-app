@@ -1,6 +1,12 @@
-<div class="">
+<div class="artists">
   <ul class="list-group">
-    <li *ngFor="let item of data" class="list-group-item btn text-light text-center mx-auto mb-5">
+    <li *ngFor="let item of data"
+        class="list-group-item btn text-light text-center mx-auto mb-5"
+        (click)="onViewArtist(item)"
+        [routerLink]="['/artist', item.name, item.id]"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}"
+      >
       <div class="row">
         <div class="col-9 right-lgic">
   
@@ -40,5 +46,8 @@
     </li>
   </ul>
   
-  <app-pagination [pages]="pages" [currentPage]="currentPage"></app-pagination>
+  <app-pagination *ngIf="paginationVisible" [currentPage]="currentPage"></app-pagination>
 </div>
+
+
+<!--     -->

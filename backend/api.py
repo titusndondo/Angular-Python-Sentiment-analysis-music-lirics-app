@@ -45,6 +45,12 @@ def api():
     return {'API': 'Running'}
 
 
+@app.route('/api/number-of-artists')
+def get_number_of_artists():
+    number = len(Artist.objects.all())
+    return jsonify({'number_of_artists': number})
+
+
 @app.route('/api/artists/page/<number>')
 def get_artists(number):
     artists = Artist.objects.paginate(page=int(number), per_page=5)
@@ -55,6 +61,7 @@ def get_artists(number):
         artist = artist.artist_doc()
 
         artist_page = {}
+        artist_page['id'] = artist['id']
         artist_page['name'] = artist['name']
         artist_page['image_url'] = artist['image_url']
         artist_page['albums'] = len([album for album in artist['albums']])

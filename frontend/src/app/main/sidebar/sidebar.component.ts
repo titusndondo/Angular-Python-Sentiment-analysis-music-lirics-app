@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SidebarService } from '../../services/sidebar.service';
+import { SidebarService } from '../services/sidebar.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,7 +8,7 @@ import { SidebarService } from '../../services/sidebar.service';
 })
 export class SidebarComponent implements OnInit {
 
-  sideBarItems: string[] = ['Home', 'Dashboard', 'Analyse', 'My Analytics'];
+  sideBarItems: string[] = ['Artists', 'Dashboard', 'My Analytics'];
 
   constructor(
     private sidebarService: SidebarService

@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainComponent } from './main/main.component';
+import { ArtistComponent } from './main/content/artists/artist/artist.component';
+import { ArtistsComponent } from './main/content/artists/artists.component';
 
 const routes: Routes = [
-  { path: 'dashboard', component: MainComponent }
+  { path: '',   redirectTo: '/artists', pathMatch: 'full' },
+  { path: 'artists', component: ArtistsComponent },
+  { path: 'artists/page/:page_num', component: ArtistsComponent },
+  { path: 'artist/:name/:id', component: ArtistComponent }
 ];
 
 @NgModule({

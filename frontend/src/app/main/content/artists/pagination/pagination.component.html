@@ -1,0 +1,24 @@
+<nav id="pagination" aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+
+    <li (click)="onPaginate($event, 'previous')" class="page-item disabled" [ngClass]="{'disabled': currentPage === 1}">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true" >Previous</a>
+    </li>
+
+    <li *ngFor="let page of pages"
+
+      (click)="onPaginate($event, page)" 
+      class="page-item"
+      [ngClass]="{'active': page === currentPage}"
+ 
+      >
+      
+      <a class="page-link" href="#">{{ page }}</a>
+    </li>
+    
+    <li (click)="onPaginate($event, 'next')" class="page-item" [ngClass]="{'disabled': currentPage === numberOfPages}">
+      <a class="page-link" href="#">Next</a>
+    </li>
+
+  </ul>
+</nav>

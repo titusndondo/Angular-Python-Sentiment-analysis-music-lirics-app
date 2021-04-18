@@ -8,9 +8,21 @@ export class HttpClientService {
 
   baseUrl: string = 'http://127.0.0.1:5000/api/';
 
+  getNumberOfArtists() {
+    return this.httpClient.get(
+      `${this.baseUrl}number-of-artists`
+    )
+  }
+
   paginate(pageNumber: number) {
     return this.httpClient.get(
       `${this.baseUrl}artists/page/${pageNumber}`
+    )
+  }
+
+  getArtist(id: number) {
+    return this.httpClient.get(
+      `${this.baseUrl}artist/${id}`
     )
   }
   

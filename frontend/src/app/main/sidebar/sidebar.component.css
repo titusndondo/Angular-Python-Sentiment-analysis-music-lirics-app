@@ -3,7 +3,7 @@
   width: 275px;
   height: 900px;
   background-color: #1b1e27;
-  border-radius: 5px;
+  border-radius: 0px 1px 1px 0px;
   z-index: 10000;
 }
 
@@ -76,4 +76,8 @@
 
 .left-lgic {
   border-radius: 0px 25px 25px 0px;
+}
+
+.active-now {
+  background-color: #00727f;
 }
