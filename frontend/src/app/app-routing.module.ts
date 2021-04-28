@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ArtistComponent } from './main/content/artists/artist/artist.component';
+import { ArtistComponent } from './main/content/artists/artist-item/artist/artist.component';
 import { ArtistsComponent } from './main/content/artists/artists.component';
 
 const routes: Routes = [

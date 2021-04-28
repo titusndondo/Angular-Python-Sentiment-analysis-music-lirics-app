@@ -14,6 +14,8 @@ export class MainComponent implements OnInit {
 
   breadCrumbStatus: any;
 
+  isArtistPage!: boolean;
+
   constructor(
     private sidebarService: SidebarService,
     private breadcrumbService: BreadCrumbService
@@ -32,20 +34,23 @@ export class MainComponent implements OnInit {
     
     this.breadcrumbService.breadCrumbStatusSubject.subscribe(
       (response: any) => {
-        console.log(response);
+
         if(response.resetBreadCrumbs) {
-          console.log('resetting...')
+          // console.log('resetting...');
           this.breadCrumbStatus.artists.active = true;
           this.breadCrumbStatus.artist.visible = false;
           this.breadCrumbStatus.artist.active = false;
+          this.isArtistPage = false;
         }
 
         if(response.name) {
-          console.log('...updating')
+          // console.log('...updating');
           this.breadCrumbStatus.artists.active = false;
           this.breadCrumbStatus.artist.visible = true;
           this.breadCrumbStatus.artist.active = true;
           this.breadCrumbStatus.artist.name = response.name;
+          this.isArtistPage = true;
+          this.isSidebarOpen = false;
         }
       }
     )

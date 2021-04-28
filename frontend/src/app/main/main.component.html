@@ -3,8 +3,11 @@
     <app-navbar></app-navbar>
     <div id="container" class="mx-auto mt-2">
       <div class="row">
-        <div *ngIf="isSidebarOpen" class="col-2">
+        <div *ngIf="isSidebarOpen" class="" [ngClass]="{'col-2': !isArtistPage}">
           <app-sidebar></app-sidebar>
+        </div>
+        <div *ngIf="isArtistPage" class="col-2">
+          <app-artist-profile></app-artist-profile>
         </div>
         <div class="col">
 
@@ -22,7 +25,7 @@
                   class="breadcrumb-item bci">Track name</li>
               </ol>
             </nav>
-            <div class="col mt-5">
+            <div class="mt-5">
               <router-outlet></router-outlet>
             </div>
           </div>

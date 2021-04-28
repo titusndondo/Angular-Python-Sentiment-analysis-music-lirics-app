@@ -1,0 +1,48 @@
+.right-lgic,
+.left-lgic {
+  background-color: #1b1e27;
+  padding: 0.6rem;
+}
+
+.middle-lgic {
+  width: 5px !important;
+  background-color: #21242f;
+}
+
+.right-lgic {
+  border-radius: 25px 0px 0px 25px;
+  transition: all 0.5s;
+}
+
+.left-lgic {
+  border-radius: 0px 25px 25px 0px;
+  transition: all 0.5s;
+}
+
+.img-ellipse,
+.profile-link {
+  width: 5rem;
+}
+
+.img-ellipse {
+  position: absolute;
+  top: -40%;
+  left: 10%;
+  height: 5rem;
+  border: 3px solid #f1f1f1;
+  border-radius: 10rem;
+  transition: all 3s;
+}
+
+.profile-link {
+  background: #f1f1f1;
+  color: #00727f;
+  width: 90%;
+  /* height: 20px; */
+  padding: 0;
+  border-radius: 15px;
+}
+
+.chart-icon {
+  font-size: 3rem;
+}

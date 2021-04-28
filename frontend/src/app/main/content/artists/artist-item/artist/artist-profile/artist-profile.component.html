@@ -1,0 +1,25 @@
+<div id="artist-profile-bar" class="">
+  <div class="row row-cols-1 no-gutters profile mx-auto">
+    <div class="col text-center py-5 profile-col">
+      <div class="text-center img-ellipse mx-auto"></div>
+      <button class="btn btn-dark profile-link mt-2">Artist</button>
+    </div>
+    <div class="col mt-5">
+      <ul class="list-group">
+        <li *ngFor="let item of items"class="list-group-item btn text-light text-center mx-auto mb-3">
+          <div class="row">
+            <div class="col-8 right-lgic">
+              <app-horizontal-bar></app-horizontal-bar>
+              <!-- {{ item }} -->
+            </div>
+            <div class="col-1 middle-lgic">
+            </div>
+            <div class="col left-lgic">
+              &nbsp;
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { DataService } from 'src/app/main/services/data.service';
 import { ResizeObserverService } from 'src/app/main/services/resize-observer.service';
-import * as d3  from 'd3';
 
 @Component({
   selector: 'app-horizontal-bar',
@@ -11,7 +11,7 @@ export class HorizontalBarComponent implements OnInit, AfterViewInit {
 
   @Input() multi: any;
   @ViewChild('wrapper') wrapper!: ElementRef;
-  view: [number, number] = [200, 30];
+  view!: [number, number];
 
   // options
   showXAxis: boolean = true;
@@ -28,11 +28,19 @@ export class HorizontalBarComponent implements OnInit, AfterViewInit {
   };
 
   constructor(
-    private resizeObserverService: ResizeObserverService
+    private resizeObserverService: ResizeObserverService,
+    private dataService: DataService
   ) { }
 
   ngOnInit(): void {
+    console.log(this.multi);
     
+    this.dataService.audioFeaturesTransferSubject.subscribe(
+      (response: any) => {
+        console.log(response);
+        // this.multi = response;
+      }
+    )
   }
 
   ngAfterViewInit() {
@@ -42,12 +50,6 @@ export class HorizontalBarComponent implements OnInit, AfterViewInit {
         this.view = [dimensions.width, dimensions.height]
       }
     )
-
-    const bars: d3.Selection<d3.BaseType, unknown, HTMLElement, any> = d3.selectAll('.bar');
-  }
-
-  onSelect(event: any) {
-    console.log(event);
   }
 
 }

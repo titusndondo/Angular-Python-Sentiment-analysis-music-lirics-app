@@ -11,9 +11,12 @@ import { NavbarComponent } from './main/navbar/navbar.component';
 import { SidebarComponent } from './main/sidebar/sidebar.component';
 import { ContentComponent } from './main/content/content.component';
 import { ArtistsComponent } from './main/content/artists/artists.component';
-import { HorizontalBarComponent } from './main/content/artists/horizontal-bar/horizontal-bar.component';
+import { HorizontalBarComponent } from './main/content/artists/artist-item/horizontal-bar/horizontal-bar.component';
 import { PaginationComponent } from './main/content/artists/pagination/pagination.component';
-import { ArtistComponent } from './main/content/artists/artist/artist.component';
+import { ArtistComponent } from './main/content/artists/artist-item/artist/artist.component';
+import { ArtistItemComponent } from './main/content/artists/artist-item/artist-item.component';
+import { NumberCardsComponent } from './main/content/artists/artist-item/artist/number-cards/number-cards.component';
+import { ArtistProfileComponent } from './main/content/artists/artist-item/artist/artist-profile/artist-profile.component';
 
 
 @NgModule({
@@ -26,7 +29,10 @@ import { ArtistComponent } from './main/content/artists/artist/artist.component'
     ArtistsComponent,
     HorizontalBarComponent,
     PaginationComponent,
-    ArtistComponent
+    ArtistComponent,
+    ArtistItemComponent,
+    NumberCardsComponent,
+    ArtistProfileComponent
   ],
   imports: [
     BrowserModule,

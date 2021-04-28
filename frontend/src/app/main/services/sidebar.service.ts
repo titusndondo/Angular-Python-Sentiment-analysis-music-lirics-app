@@ -8,5 +8,9 @@ export class SidebarService {
   isSidebarOpen: boolean = true;
 
   sidebarStatusSubject = new Subject();
+
+  isArtistProfileOpen: boolean = false;
+  
+  artistProfileStatusSubject = new Subject();
   
 }

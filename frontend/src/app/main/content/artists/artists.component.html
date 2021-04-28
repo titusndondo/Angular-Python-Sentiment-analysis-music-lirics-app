@@ -1,55 +1,9 @@
-<div class="artists">
+<div class="artists mt-5">
   <ul class="list-group">
     <li *ngFor="let item of data"
-        class="list-group-item btn text-light text-center mx-auto mb-5"
-
-      >
-      <div class="row">
-        <div class="col-9 right-lgic">
-  
-          <div class="row">
-            <div class="col">
-              <div class="text-center img-ellipse mx-auto">
-                <img class="img-fluid rounded-circle" [src]="item.image_url" alt="">
-              </div>
-            </div>
-            <div class="col-9">
-              <div class="d-flex justify-content-around">
-                <p>{{ item.name }}</p>
-                <p>Albums: {{ item.albums }}</p>
-                <p>Songs: {{ item.tracks }}</p>
-              </div>
-            </div>
-          </div>
-  
-          <div class="row">
-            <app-horizontal-bar [multi]="[item.sentiments]"></app-horizontal-bar>
-          </div>
-  
-        </div>
-        <div class="col-1 middle-lgic">
-        </div>
-        <div class="col left-lgic"
-        (click)="onViewArtist(item)"
-        [routerLink]="['/artist', item.name, item.id]"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: true}"
-        >
-          <!-- &nbsp; -->
-          <div class="d-flex justify-content-around">
-            <i class="fas fa-chart-line chart-icon"></i>
-            <i class="fas fa-chart-bar chart-icon"></i>
-          </div>
-          <button class="btn btn-dark profile-link mt-2">More</button>
-  
-          <!-- <a class="btn btn-dark" href="">More</a> -->
-        </div>
-      </div>
+        class="list-group-item btn text-light text-center mx-auto my-4 lgi">
+        <app-artist-item [item]="item"></app-artist-item>
     </li>
   </ul>
-  
   <app-pagination *ngIf="paginationVisible" [currentPage]="currentPage"></app-pagination>
 </div>
-
-
-<!--     -->

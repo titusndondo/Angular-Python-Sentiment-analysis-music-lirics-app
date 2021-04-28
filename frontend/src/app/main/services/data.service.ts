@@ -5,6 +5,6 @@ import { Subject } from 'rxjs';
 export class DataService {
   constructor() { }
 
-  dataTransferSubject = new Subject();
+  audioFeaturesTransferSubject = new Subject();
 
 }
