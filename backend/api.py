@@ -1,21 +1,15 @@
-from os import write
 import uuid
-from flask import Flask, request, jsonify, make_response, redirect
+from flask import Flask, request, jsonify, redirect
 from flask.helpers import url_for
 from flask_cors import CORS
 from flask_mongoengine import MongoEngine
 from mongoengine.connection import disconnect
-from werkzeug.security import generate_password_hash
 from database.models import (
     Artist,
     Album,
     Track, Producer, Writer, Contributor, Feature,
     db
 )
-import datetime
-import jwt
-from functools import wraps
-import json
 
 app = Flask(__name__)
 
@@ -53,7 +47,7 @@ def get_number_of_artists():
 
 @app.route('/api/artists/page/<number>')
 def get_artists(number):
-    artists = Artist.objects.paginate(page=int(number), per_page=5)
+    artists = Artist.objects.paginate(page=int(number), per_page=7)
     response = []
 
     for artist in artists.items:

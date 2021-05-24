@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/main/services/data.service';
+import * as d3 from 'd3';
 
 @Component({
   selector: 'app-artist-profile',
@@ -8,12 +9,20 @@ import { DataService } from 'src/app/main/services/data.service';
 })
 export class ArtistProfileComponent implements OnInit {
 
-  items: any = [1, 2, 3, 4, 5, 6, 7, 8];
+  items: any;
 
-  constructor() { }
+  constructor(
+    private dataService: DataService
+  ) { }
 
   ngOnInit(): void {
-    
+    this.items = this.dataService.audioFeatures;
+    this.dataService.audioFeaturesTransferSubject.subscribe((response: any) => {
+      // console.log('Arrived');
+      // console.log(response);
+      // this.items = response;
+      
+    })
   }
 
 }

@@ -6,5 +6,6 @@ export class DataService {
   constructor() { }
 
   audioFeaturesTransferSubject = new Subject();
+  audioFeatures: any;
 
 }

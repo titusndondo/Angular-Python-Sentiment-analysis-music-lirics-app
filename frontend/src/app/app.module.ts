@@ -17,6 +17,7 @@ import { ArtistComponent } from './main/content/artists/artist-item/artist/artis
 import { ArtistItemComponent } from './main/content/artists/artist-item/artist-item.component';
 import { NumberCardsComponent } from './main/content/artists/artist-item/artist/number-cards/number-cards.component';
 import { ArtistProfileComponent } from './main/content/artists/artist-item/artist/artist-profile/artist-profile.component';
+import { HBarSComponent } from './main/content/artists/artist-item/artist/artist-profile/h-bar-s/h-bar-s.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ArtistProfileComponent } from './main/content/artists/artist-item/artis
     ArtistComponent,
     ArtistItemComponent,
     NumberCardsComponent,
-    ArtistProfileComponent
+    ArtistProfileComponent,
+    HBarSComponent
   ],
   imports: [
     BrowserModule,

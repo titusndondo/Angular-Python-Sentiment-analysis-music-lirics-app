@@ -31,7 +31,7 @@ export class ArtistComponent implements OnInit {
         console.log(params);
         this.httpClientService.getArtist(params['id']).subscribe(
           (response: any) => {
-            console.log(response)
+            // console.log(response)
             this.artistDoc = response;
 
             this.numberCardsData = [
@@ -70,13 +70,16 @@ export class ArtistComponent implements OnInit {
                   ]
                 }
               ]
-              this.dataService.audioFeaturesTransferSubject.next(out);
+              
               audioFeatures = [...audioFeatures, ...out]
 
             };
-            // console.log(audioFeatures);
 
-            
+            audioFeatures = audioFeatures.filter((d: any) => d.series[0].name !== 'key');
+            audioFeatures = audioFeatures.filter((d: any) => d.series[0].name !== 'loudness');
+            audioFeatures = audioFeatures.filter((d: any) => d.series[0].name !== 'tempo')
+            console.log(audioFeatures);
+            this.dataService.audioFeatures = audioFeatures;
 
             this.breadcrumbService.breadCrumbStatusSubject.next({'name': response.name});
 

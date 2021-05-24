@@ -8,14 +8,16 @@
       <ul class="list-group">
         <li *ngFor="let item of items"class="list-group-item btn text-light text-center mx-auto mb-3">
           <div class="row">
-            <div class="col-8 right-lgic">
-              <app-horizontal-bar></app-horizontal-bar>
-              <!-- {{ item }} -->
+            <div class="col-8 align-content-end right-lgic"> 
+              <div class="row">
+                <p class="m-0">{{ item.series[0].name }}</p>
+                <app-h-bar-s [item]="item"></app-h-bar-s>
+              </div>
             </div>
             <div class="col-1 middle-lgic">
             </div>
             <div class="col left-lgic">
-              &nbsp;
+              <p class="small mt-4">{{ item.series[0].value.toFixed(1) * 100 + '%' }}</p>
             </div>
           </div>
         </li>

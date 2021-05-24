@@ -3,15 +3,15 @@ import { DataService } from 'src/app/main/services/data.service';
 import { ResizeObserverService } from 'src/app/main/services/resize-observer.service';
 
 @Component({
-  selector: 'app-horizontal-bar',
-  templateUrl: './horizontal-bar.component.html',
-  styleUrls: ['./horizontal-bar.component.css']
+  selector: 'app-h-bar-s',
+  templateUrl: './h-bar-s.component.html',
+  styleUrls: ['./h-bar-s.component.css']
 })
-export class HorizontalBarComponent implements OnInit, AfterViewInit {
+export class HBarSComponent implements OnInit, AfterViewInit {
 
-  @Input() multi: any;
+  @Input() item: any;
   @ViewChild('wrapper') wrapper!: ElementRef;
-  view!: [number, number];
+  view: [number, number] = [155, 30];
 
   // options
   showXAxis: boolean = true;
@@ -24,7 +24,7 @@ export class HorizontalBarComponent implements OnInit, AfterViewInit {
   xAxisLabel: string = 'Normalized Population';
 
   colorScheme = {
-    domain: ['#00A489', '#00727F', '#F9F871', '#82D37C']
+    domain: ['#f1f1f1', '#00727F']
   };
 
   constructor(
@@ -33,23 +33,16 @@ export class HorizontalBarComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.multi);
-    
-    this.dataService.audioFeaturesTransferSubject.subscribe(
-      (response: any) => {
-        console.log(response);
-        // this.multi = response;
-      }
-    )
+    // console.log(this.item);
+
   }
 
   ngAfterViewInit() {
-    this.resizeObserverService.observeElement(this.wrapper);
-    this.resizeObserverService.resizeSubject.subscribe(
-      (dimensions: any) => {
-        this.view = [dimensions.width, dimensions.height]
-      }
-    )
+    // this.resizeObserverService.observeElement(this.wrapper);
+    // this.resizeObserverService.resizeSubject.subscribe(
+    //   (dimensions: any) => {
+    //     this.view = [155, 30]
+    //   }
+    // )
   }
-
 }
