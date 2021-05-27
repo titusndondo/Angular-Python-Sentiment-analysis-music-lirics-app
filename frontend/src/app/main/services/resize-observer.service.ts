@@ -1,5 +1,5 @@
 import { ElementRef, Injectable } from "@angular/core";
-import { ResizeObserver } from "resize-observer";
+import ResizeObserver from 'resize-observer-polyfill';
 import { ResizeObserverEntry } from "resize-observer/lib/ResizeObserverEntry";
 import { Subject } from "rxjs";
 

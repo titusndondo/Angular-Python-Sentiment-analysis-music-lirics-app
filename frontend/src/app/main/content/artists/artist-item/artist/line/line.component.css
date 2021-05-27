@@ -1,0 +1,9 @@
+.wrapper {
+  height: 25rem;
+}
+
+.x-axis,
+.y-axis {
+  color: #00727f;
+  stroke-width: 2px;
+}

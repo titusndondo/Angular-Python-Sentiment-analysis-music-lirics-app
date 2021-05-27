@@ -7,5 +7,6 @@ export class DataService {
 
   audioFeaturesTransferSubject = new Subject();
   audioFeatures: any;
+  albumsLineChartData: any;
 
 }

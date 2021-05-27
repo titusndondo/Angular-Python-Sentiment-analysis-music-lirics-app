@@ -18,6 +18,7 @@ import { ArtistItemComponent } from './main/content/artists/artist-item/artist-i
 import { NumberCardsComponent } from './main/content/artists/artist-item/artist/number-cards/number-cards.component';
 import { ArtistProfileComponent } from './main/content/artists/artist-item/artist/artist-profile/artist-profile.component';
 import { HBarSComponent } from './main/content/artists/artist-item/artist/artist-profile/h-bar-s/h-bar-s.component';
+import { LineComponent } from './main/content/artists/artist-item/artist/line/line.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { HBarSComponent } from './main/content/artists/artist-item/artist/artist
     ArtistItemComponent,
     NumberCardsComponent,
     ArtistProfileComponent,
-    HBarSComponent
+    HBarSComponent,
+    LineComponent
   ],
   imports: [
     BrowserModule,

@@ -4,6 +4,19 @@ body {
   background-color: #21242f;
 }
 
+svg {
+  overflow: visible;
+  width: 100%;
+}
+
+/* .wrapper {
+  height: 100%;
+}
+
+.ngx-charts ng-tns-c16-0 {
+  height: 100px !important;
+} */
+
 .navbar-dark,
 .bg-dark {
   background-color: #030407 !important;

@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { select } from 'd3-selection';
 import { ResizeObserverService } from 'src/app/main/services/resize-observer.service';
 
 @Component({
@@ -26,9 +27,13 @@ export class NumberCardsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    // const chart = select(this.wrapper.nativeElement.querySelector('svg'));
+    // console.log(chart);
     this.resizeObserverService.observeElement(this.wrapper);
     this.resizeObserverService.resizeSubject.subscribe(
       (dimensions: any) => {
+        // chart.attr('width', dimensions.width).attr('height', dimensions.height);
+        
         this.view = [dimensions.width, dimensions.height]
       }
     )
