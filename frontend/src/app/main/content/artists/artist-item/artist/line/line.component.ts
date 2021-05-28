@@ -10,7 +10,7 @@ import { extent, max, min } from 'd3-array';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { NumberValue, scaleLinear, scaleTime } from 'd3-scale';
 import { select } from 'd3-selection';
-import { curveCardinal, line } from 'd3-shape';
+import { curveCardinal, curveLinear, curveNatural, line } from 'd3-shape';
 import { timeFormat, timeParse } from 'd3-time-format';
 import * as moment from 'moment';
 import { DataService } from 'src/app/main/services/data.service';
@@ -41,10 +41,7 @@ export class LineComponent implements OnInit, AfterViewInit {
     this.resizeObserverService.resizeSubject.subscribe((dimensions: any) => {
       this.dimensions = dimensions;
       // console.log(this.dimensions);
-      this.plot(
-        this.dataService.albumsLineChartData.slice(0, 5),
-        this.dimensions
-      );
+      this.plot(this.dataService.albumsLineChartData, this.dimensions);
     });
   }
 
@@ -71,24 +68,24 @@ export class LineComponent implements OnInit, AfterViewInit {
     // console.log(xScaleExtent[0]);
 
     const svg = select('.line-chart');
-    // console.log(moment().month(0).format("MMMM"));
+    console.log(moment().day(11).format('DD-MM-YYYY'));
     const xScale: any = scaleTime()
       .domain(xScaleExtent)
       .range([0, dimensions.width]);
-    const xAxis: any = axisBottom(xScale).ticks(data.length * 2); //.tickFormat((index: any) => index + 1);
+    const xAxis: any = axisBottom(xScale).ticks(data.length); //.tickFormat((index: any) => index + 1);
     svg
       .select('.x-axis')
       .style('transform', `translateY(${dimensions.height}px)`)
       .call(xAxis);
 
     const yScale = scaleLinear().domain([0, 1]).range([dimensions.height, 0]);
-    const yAxis: any = axisLeft(yScale).ticks(5);
+    const yAxis: any = axisLeft(yScale).ticks(3);
     svg.select('.y-axis').call(yAxis);
 
     const myLine = line()
       .x((d: any) => xScale(d.release_date))
-      .y((d: any) => yScale(d.score))
-      .curve(curveCardinal);
+      .y((d: any) => yScale(d.score));
+    // .curve(curveNatural);
 
     svg
       .selectAll('.line')

@@ -1,4 +1,8 @@
-<div class="wrapper" #wrapper>
-  <ngx-charts-number-card [view]="view" [scheme]="colorScheme" [results]="numberCardsData" [cardColor]="cardColor">
-  </ngx-charts-number-card>
+<div class="row row-cols-4 justify-content-between">
+  <div *ngFor="let item of numberCardsData" class="col one-of-four">
+    <p class="text-light ml-3 card-value">{{ numberWithCommas(item.value) }}</p>
+    <p class="text-light ml-3 card-title">{{ item.name }}</p>
+  </div>
 </div>
+
+

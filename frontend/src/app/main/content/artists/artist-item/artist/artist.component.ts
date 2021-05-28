@@ -28,7 +28,7 @@ export class ArtistComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      console.log(params);
+      // console.log(params);
       this.httpClientService
         .getArtist(params['id'])
         .subscribe((response: any) => {
@@ -49,7 +49,7 @@ export class ArtistComponent implements OnInit {
             },
           ];
 
-          const albumsLineChartData: any = [];
+          let albumsLineChartData: any = [];
           let afs: any[] = [];
           response.albums.map((album: any) => {
             // console.log(album);
@@ -87,7 +87,9 @@ export class ArtistComponent implements OnInit {
 
             const albumData = {
               name: album['name'],
-              release_date: album['release_date'],
+              release_date: album['release_date']
+                ? album['release_date']
+                : undefined,
               cover_art_url: album['cover_art_url'],
               sentiment: mostFrequentSentiment,
               score: frequencyPercentage,
@@ -133,6 +135,9 @@ export class ArtistComponent implements OnInit {
           this.dataService.audioFeatures = audioFeatures;
 
           // console.log(albumsLineChartData);
+          albumsLineChartData = albumsLineChartData.filter(
+            (d: any) => d.release_date
+          );
           this.dataService.albumsLineChartData = albumsLineChartData;
 
           this.breadcrumbService.breadCrumbStatusSubject.next({
