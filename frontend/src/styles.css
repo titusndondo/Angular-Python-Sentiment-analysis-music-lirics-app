@@ -4,19 +4,6 @@ body {
   background-color: #21242f;
 }
 
-svg {
-  overflow: visible;
-  width: 100%;
-}
-
-/* .wrapper {
-  height: 100%;
-}
-
-.ngx-charts ng-tns-c16-0 {
-  height: 100px !important;
-} */
-
 .navbar-dark,
 .bg-dark {
   background-color: #030407 !important;
@@ -40,4 +27,23 @@ svg {
   -webkit-box-shadow: -2px -1px 15px 7px rgba(#030407ab, 0.5);
   -moz-box-shadow: -3px -2px 30px 14px rgba(#030407ab, 0.425);
   box-shadow: -4px -3px 45px 21px rgba(#030407ab, 0.35);
+}
+
+svg {
+  overflow: visible;
+  /* width: 100%; */
+}
+
+g.x-axis text,
+g.y-axis text {
+  color: #f1f1f1 !important;
+}
+
+.artist-albums-circle {
+  /* cursor: pointer; */
+  transition: r 0.5s;
+}
+
+.artist-albums-circle:hover {
+  r: 12;
 }

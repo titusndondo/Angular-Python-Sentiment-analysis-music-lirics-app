@@ -4,11 +4,17 @@
   height: 6.5rem;
   border-bottom: 0.5rem solid #a8385d;
   border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.one-of-four:hover {
+  background-color: #00727f;
 }
 
 .card-value,
 .card-title {
-  margin-left: 1rem;
+  margin-left: 0.5rem;
 }
 
 .card-value {

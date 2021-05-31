@@ -83,12 +83,13 @@ export class ArtistComponent implements OnInit {
 
             const mostFrequentSentiment = highest(sentiments);
             const frequencyPercentage =
-              sentimentCounts[mostFrequentSentiment] / sentiments.length;
+              (sentimentCounts[mostFrequentSentiment] / sentiments.length) *
+              100;
 
             const albumData = {
               name: album['name'],
               release_date: album['release_date']
-                ? album['release_date']
+                ? new Date(album['release_date'])
                 : undefined,
               cover_art_url: album['cover_art_url'],
               sentiment: mostFrequentSentiment,

@@ -1,37 +1,32 @@
-import { ElementRef, Injectable } from "@angular/core";
+import { ElementRef, Injectable } from '@angular/core';
 import ResizeObserver from 'resize-observer-polyfill';
-import { ResizeObserverEntry } from "resize-observer/lib/ResizeObserverEntry";
-import { Subject } from "rxjs";
+import { ResizeObserverEntry } from 'resize-observer/lib/ResizeObserverEntry';
+import { Subject } from 'rxjs';
 
 export interface Dimensions {
-  width: number,
-  height: number
-};
+  width: number;
+  height: number;
+}
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class ResizeObserverService {
-
   resizeSubject = new Subject();
 
-  constructor() { };
+  constructor() {}
 
   observeElement(element: ElementRef) {
-    const resizeObserver = new ResizeObserver(entries => {
+    const resizeObserver = new ResizeObserver((entries: any) => {
+      let dimensions: Dimensions;
+      entries.forEach((entry: ResizeObserverEntry) => {
+        console.log(entry);
+        const height = entry.contentRect.height;
+        const width = entry.contentRect.width;
+        dimensions = { width: width, height: height };
 
-        let dimensions: Dimensions;
-        entries.forEach((entry: ResizeObserverEntry) => {
-          
-          const height = entry.contentRect.height;
-          const width = entry.contentRect.width;
-          dimensions = { height: height, width: width };
-
-          this.resizeSubject.next(dimensions);
-
-        });
+        this.resizeSubject.next(dimensions);
       });
+    });
 
     resizeObserver.observe(element.nativeElement);
-
-  };
-
-};
+  }
+}
