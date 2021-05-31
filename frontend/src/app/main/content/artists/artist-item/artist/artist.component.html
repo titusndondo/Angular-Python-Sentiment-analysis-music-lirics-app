@@ -1,16 +1,19 @@
 <div class="container-fluid">
-  <div class="row no-gutters">
+  <div class="row row-cols-1 no-gutters">
     <div class="col">
       <div>
-        <p class="display-4 text-light mb-5">{{ artistDoc.name }}</p>
+        <p class="display-4 text-light ">{{ artistDoc.name }}</p>
       </div>
-      <div class="cards mb-3">
+      <div class="cards ">
         <app-number-cards [numberCardsData]="numberCardsData"></app-number-cards>
       </div>
-      <div class="lines-row mb-3">
+      
+      
+    </div>
+    <div class="col-12">
+      <div class="lines-row ">
         <app-line></app-line>
       </div>
-      
     </div>
   </div>
 </div>

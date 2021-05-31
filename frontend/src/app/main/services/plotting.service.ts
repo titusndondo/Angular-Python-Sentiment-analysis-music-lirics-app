@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { extent } from 'd3-array';
 import { axisBottom, axisLeft } from 'd3-axis';
+import { brushX } from 'd3-brush';
 import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
-import { select, selectAll } from 'd3-selection';
+import { select } from 'd3-selection';
 import { curveMonotoneX, line } from 'd3-shape';
-import { timeFormat } from 'd3-time-format';
 
 @Injectable({ providedIn: 'root' })
 export class PlottingService {
@@ -12,43 +12,7 @@ export class PlottingService {
 
   plotLineChart(data: any, dimensions: any) {
     if (!dimensions?.width) return;
-
-    const xScaleExtent = <[Date, Date]>(
-      (<unknown>extent(data, (d: any) => d.release_date))
-    );
     // console.log(xScaleExtent[0]);
-
-    const chartSvg = select('.line-chart')
-      .attr('width', dimensions.width)
-      .attr('height', dimensions.height);
-
-    const timelineSvg = select('.timeline-chart')
-      .attr('width', dimensions.width)
-      .attr('height', 80);
-
-    const xScale: any = scaleTime()
-      .domain(xScaleExtent)
-      .range([30, dimensions.width]);
-
-    const xAxis: any = axisBottom(xScale).ticks(data.length);
-
-    chartSvg
-      .select('.x-axis')
-      .style('transform', `translateY(${dimensions.height}px)`)
-      .call(xAxis);
-
-    // timelineSvg
-    //   .select('.x-axis')
-    //   .style('transform', `translateY(${dimensions.height}px)`)
-    //   .call(xAxis);
-
-    const yScale = scaleLinear().domain([0, 100]).range([dimensions.height, 0]);
-    const yAxis: any = axisLeft(yScale).ticks(3);
-    chartSvg.select('.y-axis').call(yAxis);
-
-    const yScale2 = scaleLinear().domain([0, 100]).range([80, 0]);
-    const yAxis2: any = axisLeft(yScale2).ticks(3);
-    timelineSvg.select('.y-axis-t').call(yAxis2);
 
     const continentColor = scaleOrdinal([
       '#00A489',
@@ -57,60 +21,178 @@ export class PlottingService {
       '#82D37C',
     ]);
 
-    const myLine = line()
-      .x((d: any) => xScale(d.release_date))
-      .y((d: any) => yScale(d.score))
-      .curve(curveMonotoneX);
+    const chartSvg = select('.line-chart')
+      .attr('width', dimensions.width)
+      .attr('height', dimensions.height);
 
-    const myLine2 = line()
-      .x((d: any) => xScale(d.release_date))
-      .y((d: any) => yScale2(d.score))
-      .curve(curveMonotoneX);
+    const chartContent = chartSvg.select('.content');
 
-    chartSvg
-      .selectAll('.line')
-      .data([data])
-      .join('path')
-      .attr('class', 'line')
-      .attr('d', (data: any) => myLine(data))
-      .attr('fill', 'transparent')
-      .attr('stroke', '#00727f')
-      .attr('stroke-width', '2px');
+    const timelineSvg = select('.timeline-chart')
+      .attr('width', dimensions.width)
+      .attr('height', 80);
+
+    const xScaleExtent = <[Date, Date]>(
+      (<unknown>extent(data, (d: any) => d.release_date))
+    );
+
+    const brushRangeStart = xScaleExtent[0];
+    let brushFullRange = [
+      brushRangeStart,
+      new Date(
+        `${brushRangeStart.getMonth()}-${brushRangeStart.getDay()}-${
+          brushRangeStart.getFullYear() + 3
+        }`
+      ),
+    ];
+
+    const xScaleTimeline: any = scaleTime()
+      .domain(xScaleExtent)
+      .range([30, dimensions.width]);
+
+    const yScaleTimeline = scaleLinear().domain([0, 100]).range([80, 0]);
+    const yAxisTimeline: any = axisLeft(yScaleTimeline).ticks(3);
+    timelineSvg.select('.y-axis-t').call(yAxisTimeline);
+
+    const lineTimeline = line()
+      .x((d: any) => xScaleTimeline(d.release_date))
+      .y((d: any) => yScaleTimeline(d.score))
+      .curve(curveMonotoneX);
 
     timelineSvg
       .selectAll('.line')
       .data([data])
       .join('path')
       .attr('class', 'line')
-      .attr('d', (data: any) => myLine2(data))
+      .attr('d', (data: any) => lineTimeline(data))
       .attr('fill', 'transparent')
       .attr('stroke', '#00727f')
-      .attr('stroke-width', '2px');
+      .attr('stroke-width', '1px');
 
-    const circleGroup = chartSvg
+    // Main Chart
+    const addAxis = (xScaleExtent: Date[]) => {
+      const xScale: any = scaleTime()
+        .domain(xScaleExtent)
+        .range([30, dimensions.width]);
+      const xAxis: any = axisBottom(xScale).ticks(5);
+      chartSvg
+        .select('.x-axis')
+        .style('transform', `translateY(${dimensions.height}px)`)
+        .call(xAxis);
+
+      const yScale = scaleLinear()
+        .domain([0, 100])
+        .range([dimensions.height, 0]);
+      const yAxis: any = axisLeft(yScale).ticks(3);
+      chartSvg.select('.y-axis').call(yAxis);
+
+      return {
+        xScale: xScale,
+        yScale: yScale,
+      };
+    };
+
+    const addLine = (xScaleExtent: Date[]) => {
+      const lineChart = line()
+        .x((d: any) => addAxis(xScaleExtent).xScale(d.release_date))
+        .y((d: any) => addAxis(xScaleExtent).yScale(d.score))
+        .curve(curveMonotoneX);
+
+      chartContent
+        .selectAll('.line')
+        .data([data])
+        .join('path')
+        .attr('class', 'line')
+        .attr('d', (data: any) => lineChart(data))
+        .attr('fill', 'transparent')
+        .attr('stroke', '#00727f')
+        .attr('stroke-width', '2px');
+    };
+
+    const addCircles = (xScaleExtent: Date[]) => {
+      select('.artist-albums-circles').remove();
+      const circleGroup = chartContent
+        .append('g')
+        .attr('class', 'artist-albums-circles')
+        .selectAll('.circle')
+        .data(data)
+        .join('g');
+
+      circleGroup
+        .append('circle')
+        .attr('class', 'artist-albums-circle btn btn-outline-light')
+        .attr('cx', (d: any) => addAxis(xScaleExtent).xScale(d.release_date))
+        .attr('cy', (d: any) => addAxis(xScaleExtent).yScale(d.score))
+        .attr('r', (d: any) =>
+          d.release_date >= xScaleExtent[0] && d.release_date <= xScaleExtent[1]
+            ? 6
+            : 3
+        )
+        .attr('fill', (d: any) => continentColor(d.sentiment));
+    };
+
+    const brush: any = brushX()
+      .extent([
+        [0, 0],
+        [dimensions.width, 80],
+      ])
+      .on('start brush end', (event) => {
+        if (event.selection) {
+          const brushFullRange = event.selection.map(
+            addAxis(xScaleExtent).xScale.invert
+          );
+          // console.log(brushFullRange);
+          addLine(brushFullRange);
+          addCircles(brushFullRange);
+        }
+      });
+
+    timelineSvg
+      .select('.brush')
+      .call(brush)
+      .call(brush.move, brushFullRange.map(addAxis(xScaleExtent).xScale));
+
+    let continents = ['Sad', 'Angry', 'Happy', 'Relaxed'];
+
+    let legend = select('.line-chart-legend')
+      .attr('width', 227)
+      .attr('height', 245)
       .append('g')
-      .attr('class', 'artist-albums-circles')
-      .selectAll('.circle')
-      .data(data)
-      .join('g')
-      .attr('class', 'artist-albums-circle-group');
+      .attr('class', 'legend')
+      .attr('transform', `translate(${0},${0})`);
 
-    circleGroup
-      .append('circle')
-      .attr('class', 'artist-albums-circle btn btn-outline-light')
-      .attr('cx', (d: any) => xScale(d.release_date))
-      .attr('cy', (d: any) => yScale(d.score))
-      .attr('r', 10)
-      .attr('fill', (d: any) => continentColor(d.sentiment));
+    continents.forEach((continent, i) => {
+      let legendRow = legend
+        .append('g')
+        .attr('class', 'legend-item')
+        .attr('transform', `translate(0, ${i * 50})`);
 
-    circleGroup.on('mouseenter', function (event, d: any) {
-      // console.log(select(this));
-      // console.log(d);
-      const e = circleGroup.nodes();
-      const i: any = e.indexOf(this);
+      legendRow
+        .append('rect')
+        .attr('class', 'btn legend-btn')
+        .attr('width', 18)
+        .attr('height', 18)
+        .attr('fill', continentColor(continent));
 
-      // console.log(e);
-      // console.log(i);
+      legendRow
+        .append('text')
+        .attr('class', 'btn legend-text')
+        .attr('x', -10)
+        .attr('y', 10)
+        .attr('text-anchor', 'end')
+        .text(continent)
+        .attr('fill', '#f1f1f1')
+        .style('font-weight', 100);
+      // .attr('transform', 'translate(100, 0)');
     });
+
+    // circleGroup.on('mouseenter', function (event, d: any) {
+    // console.log(select(this));
+    // console.log(d);
+    // const e = circleGroup.nodes();
+    // const i: any = e.indexOf(this);
+
+    // console.log(e);
+    // console.log(i);
+    // });
   }
 }

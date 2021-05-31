@@ -18,7 +18,7 @@ export class ResizeObserverService {
     const resizeObserver = new ResizeObserver((entries: any) => {
       let dimensions: Dimensions;
       entries.forEach((entry: ResizeObserverEntry) => {
-        console.log(entry);
+        // console.log(entry);
         const height = entry.contentRect.height;
         const width = entry.contentRect.width;
         dimensions = { width: width, height: height };
