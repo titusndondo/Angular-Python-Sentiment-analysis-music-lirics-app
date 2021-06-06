@@ -42,9 +42,7 @@ export class ArtistComponent implements OnInit {
             {
               name: 'Tracks',
               value: d3.sum(
-                response.albums.map((album: any) => {
-                  return album.tracks.length;
-                })
+                response.albums.map((album: any) => album.tracks.length)
               ),
             },
           ];
@@ -64,27 +62,47 @@ export class ArtistComponent implements OnInit {
                 { k: {} }
               ).max;
 
-            const sentimentCounts: any = {
-              angry: 0,
-              sad: 0,
-              happy: 0,
-              relaxed: 0,
-            };
+            const sentimentCounts: any = [
+              { sentiment: 'angry', count: 0 },
+              { sentiment: 'sad', count: 0 },
+              { sentiment: 'happy', count: 0 },
+              { sentiment: 'relaxed', count: 0 },
+            ];
 
             const sentiments = album.tracks.map(
               (track: any) => track.sentiment.sentiment
             );
-            sentiments.forEach((sentiment: any) => {
-              if (sentiment === 'angry') sentimentCounts.angry += 1;
-              if (sentiment === 'sad') sentimentCounts.sad += 1;
-              if (sentiment === 'happy') sentimentCounts.happy += 1;
-              if (sentiment === 'relaxed') sentimentCounts.relaxed += 1;
+
+            sentiments.forEach((sentiment: string) => {
+              sentimentCounts.forEach((count: any) => {
+                if (count.sentiment == sentiment) count.count += 1;
+              });
             });
 
-            const mostFrequentSentiment = highest(sentiments);
+            const mostFrequentSentiment = sentimentCounts.find((count: any) => {
+              return (
+                count.count === d3.max(sentimentCounts.map((d: any) => d.count))
+              );
+            });
+
+            // sentiments.forEach((sentiment: any) => {
+            //   if (sentiment === 'angry') sentimentCounts.angry += 1;
+            //   if (sentiment === 'sad') sentimentCounts.sad += 1;
+            //   if (sentiment === 'happy') sentimentCounts.happy += 1;
+            //   if (sentiment === 'relaxed') sentimentCounts.relaxed += 1;
+            // });
+
+            // const mostFrequentSentiment = highest(sentiments);
             const frequencyPercentage =
               (sentimentCounts[mostFrequentSentiment] / sentiments.length) *
               100;
+
+            // console.log(
+            //   sentimentCounts,
+            //   sentiments,
+            //   mostFrequentSentiment.sentiment,
+            //   mostFrequentSentiment.count / sentiments.length
+            // );
 
             const albumData = {
               name: album['name'],
@@ -92,8 +110,8 @@ export class ArtistComponent implements OnInit {
                 ? new Date(album['release_date'])
                 : undefined,
               cover_art_url: album['cover_art_url'],
-              sentiment: mostFrequentSentiment,
-              score: frequencyPercentage,
+              sentiment: mostFrequentSentiment.sentiment,
+              score: (mostFrequentSentiment.count / sentiments.length) * 100,
             };
             albumsLineChartData.push(albumData);
 
@@ -134,12 +152,14 @@ export class ArtistComponent implements OnInit {
             (d: any) => d.series[0].name !== 'tempo'
           );
           this.dataService.audioFeatures = audioFeatures;
+          this.audioFeaturesData = audioFeatures;
 
           // console.log(albumsLineChartData);
           albumsLineChartData = albumsLineChartData.filter(
             (d: any) => d.release_date
           );
           this.dataService.albumsLineChartData = albumsLineChartData;
+          this.albumsLineChartData = albumsLineChartData;
 
           this.breadcrumbService.breadCrumbStatusSubject.next({
             name: response.name,

@@ -1,8 +1,8 @@
-from collections import defaultdict
 from mongoengine import *
 from mongoengine.fields import (
     BooleanField, DateField, DictField, FloatField, IntField, ListField, ReferenceField, StringField
 )
+from difflib import get_close_matches
 from flask_mongoengine import MongoEngine
 
 db = MongoEngine()
@@ -33,6 +33,10 @@ class Artist(db.DynamicDocument):
             'genres': self.genres,
             'albums': [album.album_doc() for album in self.albums]
         }
+
+    def is_matching_artist(self, name):
+        print(name, self.name)
+        return get_close_matches(name.lower(), [self.name.lower()])
 
 
 class Album(db.DynamicDocument):

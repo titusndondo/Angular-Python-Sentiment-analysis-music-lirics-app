@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,8 +20,6 @@ import { NumberCardsComponent } from './main/content/artists/artist-item/artist/
 import { ArtistProfileComponent } from './main/content/artists/artist-item/artist/artist-profile/artist-profile.component';
 import { HBarSComponent } from './main/content/artists/artist-item/artist/artist-profile/h-bar-s/h-bar-s.component';
 import { LineComponent } from './main/content/artists/artist-item/artist/line/line.component';
-import { TimelineComponent } from './main/content/artists/artist-item/artist/line/timeline/timeline.component';
-
 
 @NgModule({
   declarations: [
@@ -38,16 +37,16 @@ import { TimelineComponent } from './main/content/artists/artist-item/artist/lin
     ArtistProfileComponent,
     HBarSComponent,
     LineComponent,
-    TimelineComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgxChartsModule, 
-    BrowserAnimationsModule
+    ReactiveFormsModule,
+    NgxChartsModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

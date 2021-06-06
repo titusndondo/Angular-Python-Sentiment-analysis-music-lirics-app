@@ -1,14 +1,21 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { DataService } from 'src/app/main/services/data.service';
 import { ResizeObserverService } from 'src/app/main/services/resize-observer.service';
 
 @Component({
   selector: 'app-h-bar-s',
   templateUrl: './h-bar-s.component.html',
-  styleUrls: ['./h-bar-s.component.css']
+  styleUrls: ['./h-bar-s.component.css'],
 })
-export class HBarSComponent implements OnInit, AfterViewInit {
-
+export class HBarSComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() item: any;
   @ViewChild('wrapper') wrapper!: ElementRef;
   view: [number, number] = [155, 30];
@@ -24,25 +31,25 @@ export class HBarSComponent implements OnInit, AfterViewInit {
   xAxisLabel: string = 'Normalized Population';
 
   colorScheme = {
-    domain: ['#f1f1f1', '#00727F']
+    domain: ['#f1f1f1', '#00727F'],
   };
 
   constructor(
     private resizeObserverService: ResizeObserverService,
     private dataService: DataService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     // console.log(this.item);
-
   }
 
   ngAfterViewInit() {
     // this.resizeObserverService.observeElement(this.wrapper);
-    // this.resizeObserverService.resizeSubject.subscribe(
-    //   (dimensions: any) => {
-    //     this.view = [155, 30]
-    //   }
-    // )
+    // this.resizeObserverService.resizeSubject.subscribe((dimensions: any) => {
+    //   this.view = [155, 30];
+    // });
+  }
+  ngOnChanges() {
+    this.ngOnInit();
   }
 }

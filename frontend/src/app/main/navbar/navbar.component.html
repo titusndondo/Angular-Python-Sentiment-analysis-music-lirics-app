@@ -12,10 +12,25 @@
 
   <div class="col">
     <div class="d-flex">
-      <form id="search-artists" class="form-inline mx-auto d-flex">
-        <input class="form-control mr-sm-2 search-input" type="search" placeholder="Search artists e.g Drake"
-          aria-label="Search">
+      <form [formGroup]="searchArtistForm" (ngSubmit)="onSubmit()" id="search-artists" class="form-inline mx-auto d-flex">
+        <input class="form-control mr-sm-2 search-input px-4" type="search" placeholder="Search artists e.g Drake"
+          aria-label="Search" formControlName="name">
         <button class="btn btn-outline-dark my-2 my-sm-0 btn-search" type="submit">Search</button>
+        <div *ngIf="showSearchPopup" class="col mt-5 bg-light search-popup">
+          <div class="p-3 found-item">
+            <small class="">Artist name</small> / <a href=""><small>{{ inputValue }}</small></a>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item btn" *ngFor="let item of allArtists">
+              <div class="d-flex justify-content-between">
+                <p class="small">{{ item.name }}</p>
+                <a (click)="onViewArtist($event, item)" 
+                  class="btn btn-outline-dark text-light btn-search small px-4" 
+                  [routerLink]="['/artist', item.name, item.id]">{{ 'View' }}</a>
+              </div>
+            </li>
+          </ul>
+        </div>
       </form>
       <i class="fas fa-users-cog fa-2x user-settings-icon"></i>
     </div>

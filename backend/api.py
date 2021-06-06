@@ -1,5 +1,5 @@
 import uuid
-from flask import Flask, request, jsonify, redirect
+from flask import Flask, json, request, jsonify, redirect
 from flask.helpers import url_for
 from flask_cors import CORS
 from flask_mongoengine import MongoEngine
@@ -82,43 +82,56 @@ def get_artists(number):
     return jsonify(response)
 
 
-@app.route('/api/artist/<id>')
+@app.route('/api/artists-names')
+def get_all_artists_names():
+
+    names = []
+    artists = Artist.objects().all()
+    for artist in artists:
+        my_dict = {}
+        my_dict['name'] = artist['name']
+        my_dict['id'] = artist['id']
+        names.append(my_dict)
+    return jsonify(names)
+
+
+@ app.route('/api/artist/<id>')
 def get_artist(id):
     artist = Artist.objects.get(id=id)
     return jsonify(artist.artist_doc())
 
 
-@app.route('/api/album/<id>')
+@ app.route('/api/album/<id>')
 def get_album(id):
     album = Album.objects.get(id=id)
     return jsonify(album.album_doc())
 
 
-@app.route('/api/track/<id>')
+@ app.route('/api/track/<id>')
 def get_track(id):
     track = Track.objects.get(id=id)
     return jsonify(track.track_doc())
 
 
-@app.route('/api/producer/<id>')
+@ app.route('/api/producer/<id>')
 def get_producer(id):
     producer = Producer.objects.get(id=id)
     return jsonify(producer.producer_doc())
 
 
-@app.route('/api/writer/<id>')
+@ app.route('/api/writer/<id>')
 def get_writer(id):
     writer = Writer.objects.get(id=id)
     return jsonify(writer.writer_doc())
 
 
-@app.route('/api/feature/<id>')
+@ app.route('/api/feature/<id>')
 def get_feature(id):
     feature = Feature.objects.get(id=id)
     return jsonify(feature.feature_doc())
 
 
-@app.route('/api/contributor/<id>')
+@ app.route('/api/contributor/<id>')
 def get_contributor(id):
     contributor = Contributor.objects.get(id=id)
     return jsonify(contributor.contributor_doc())

@@ -44,6 +44,7 @@ g.y-axis text {
   transition: r 0.5s;
 }
 
-.artist-albums-circle:hover {
-  r: 15;
-}
+/* .artist-albums-circle:hover {
+  r: 30;
+  z-index: 1000000;
+} */
