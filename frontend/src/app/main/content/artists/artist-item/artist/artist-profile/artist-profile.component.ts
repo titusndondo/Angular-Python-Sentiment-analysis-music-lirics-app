@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { DataService } from 'src/app/main/services/data.service';
 
 @Component({
@@ -6,17 +6,12 @@ import { DataService } from 'src/app/main/services/data.service';
   templateUrl: './artist-profile.component.html',
   styleUrls: ['./artist-profile.component.css'],
 })
-export class ArtistProfileComponent implements OnInit {
-  items: any;
+export class ArtistProfileComponent implements OnInit, AfterViewInit {
+  @Input() audioFeaturesData: any;
 
   constructor(private dataService: DataService) {}
 
-  ngOnInit(): void {
-    this.items = this.dataService.audioFeatures;
-    this.dataService.audioFeaturesTransferSubject.subscribe((response: any) => {
-      // console.log('Arrived');
-      // console.log(response);
-      // this.items = response;
-    });
-  }
+  ngOnInit(): void {}
+
+  ngAfterViewInit() {}
 }

@@ -1,5 +1,7 @@
 #artist-profile-bar {
   position: absolute;
+  left: 0;
+  top: 0;
   width: 275px;
   height: 900px;
   background-color: #1b1e27;

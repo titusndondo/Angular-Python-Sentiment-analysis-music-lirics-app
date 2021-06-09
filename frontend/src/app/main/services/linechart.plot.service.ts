@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { extent } from 'd3-array';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { brushX } from 'd3-brush';
+import { easeCircleIn } from 'd3-ease';
 import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
 import { select } from 'd3-selection';
 import { curveMonotoneX, line } from 'd3-shape';
 
 @Injectable({ providedIn: 'root' })
-export class PlottingService {
+export class LinechartPlotService {
   constructor() {}
 
   plotLineChart(data: any, dimensions: any) {
@@ -170,6 +171,9 @@ export class PlottingService {
 
           select(circles.nodes()[i])
             .attr('fill', 'url(#image)')
+            .transition()
+            .duration(500)
+            .ease(easeCircleIn)
             .attr('r', 30)
             .attr('stroke', '#f1f1f1')
             .attr('stroke-width', '2px');
@@ -188,11 +192,16 @@ export class PlottingService {
         .on('mouseleave', function (event, d: any) {
           const circleGroup = circleGroups.nodes();
           const i: any = circleGroup.indexOf(this);
+
+          select(circles.nodes()[i])
+            .transition()
+            .duration(200)
+            .ease(easeCircleIn)
+            .attr('r', 6)
+            .attr('stroke', 'none')
+            .attr('fill', (d: any) => continentColor(d.sentiment));
           select(circleGroup[i]).select('.img-defs').remove();
           select(circleGroup[i]).select('.label').remove();
-          select(circles.nodes()[i])
-            .attr('r', 6)
-            .attr('fill', (d: any) => continentColor(d.sentiment));
         });
     };
 

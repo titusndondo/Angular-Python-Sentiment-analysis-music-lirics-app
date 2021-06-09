@@ -41,7 +41,7 @@ g.y-axis text {
 
 .artist-albums-circle {
   /* cursor: pointer; */
-  transition: r 0.5s;
+  /* transition: r 0.5s; */
 }
 
 /* .artist-albums-circle:hover {

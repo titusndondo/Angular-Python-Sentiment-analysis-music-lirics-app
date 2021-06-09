@@ -1,18 +1,22 @@
 <div class="container-fluid">
+  <app-artist-profile [audioFeaturesData]="audioFeaturesData"></app-artist-profile>
   <div class="row row-cols-1 no-gutters">
     <div class="col">
       <div>
         <p class="display-4 text-light ">{{ artistDoc.name }}</p>
       </div>
-      <div class="cards ">
+      <div class="cards">
         <app-number-cards [numberCardsData]="numberCardsData"></app-number-cards>
       </div>
-      
-      
     </div>
     <div class="col-12">
-      <div class="lines-row ">
+      <div class="lines-row">
         <app-line [albumsLineChartData]="albumsLineChartData"></app-line>
+      </div>
+    </div>
+    <div class="col-9">
+      <div class="wordcloud-row">
+        <app-wordcloud [wordCloudData]="wordCloudData"></app-wordcloud>
       </div>
     </div>
   </div>

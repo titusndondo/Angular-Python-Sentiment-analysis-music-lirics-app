@@ -4,11 +4,12 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { DataService } from 'src/app/main/services/data.service';
-import { PlottingService } from 'src/app/main/services/plotting.service';
+import { LinechartPlotService } from 'src/app/main/services/linechart.plot.service';
 import { ResizeObserverService } from 'src/app/main/services/resize-observer.service';
 
 @Component({
@@ -16,7 +17,9 @@ import { ResizeObserverService } from 'src/app/main/services/resize-observer.ser
   templateUrl: './line.component.html',
   styleUrls: ['./line.component.css'],
 })
-export class LineComponent implements OnInit, AfterViewInit, OnChanges {
+export class LineComponent
+  implements OnInit, AfterViewInit, OnChanges, OnDestroy
+{
   // data: any = [25, 30, 45, 60, 20, 65, 75, 15, 25];
   @ViewChild('line_chart_wrapper') line_chart_wrapper!: ElementRef;
   @Input() albumsLineChartData: any;
@@ -25,7 +28,7 @@ export class LineComponent implements OnInit, AfterViewInit, OnChanges {
 
   constructor(
     private dataService: DataService,
-    private plottingService: PlottingService,
+    private lineChartPlot: LinechartPlotService,
     private resizeObserverService: ResizeObserverService
   ) {}
 
@@ -35,9 +38,9 @@ export class LineComponent implements OnInit, AfterViewInit, OnChanges {
     this.resizeObserverService.observeElement(this.line_chart_wrapper);
     this.resizeObserverService.resizeSubject.subscribe((dimensions: any) => {
       this.dimensions = dimensions;
-      // console.log(this.dimensions);
+      console.log('Line', dimensions);
       // console.log(this.albumsLineChartData);
-      this.plottingService.plotLineChart(
+      this.lineChartPlot.plotLineChart(
         this.albumsLineChartData,
         this.dimensions
       );
@@ -46,9 +49,10 @@ export class LineComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnChanges() {
     // console.log('Changed');
-    this.plottingService.plotLineChart(
-      this.albumsLineChartData,
-      this.dimensions
-    );
+    this.lineChartPlot.plotLineChart(this.albumsLineChartData, this.dimensions);
+  }
+
+  ngOnDestroy() {
+    this.resizeObserverService.resizeSubject.unsubscribe();
   }
 }

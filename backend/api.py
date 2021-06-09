@@ -1,4 +1,7 @@
-import uuid
+import numpy as np
+import pandas as pd
+import pickle
+from collections import Counter
 from flask import Flask, json, request, jsonify, redirect
 from flask.helpers import url_for
 from flask_cors import CORS
@@ -10,6 +13,9 @@ from database.models import (
     Track, Producer, Writer, Contributor, Feature,
     db
 )
+
+sentiments_model = pickle.load(open('./eda/models/LR_clf.pkl', 'rb'))
+vec = pickle.load(open('./eda/models/vectorizer.pkl', 'rb'))
 
 app = Flask(__name__)
 
@@ -135,6 +141,20 @@ def get_feature(id):
 def get_contributor(id):
     contributor = Contributor.objects.get(id=id)
     return jsonify(contributor.contributor_doc())
+
+
+@app.route('/api/labelling', methods=['POST'])
+def labelling():
+    data = request.json
+    # print(data[0].keys())
+
+    response = []
+    for word_doc in data:
+        word = word_doc['word']
+        prediction = sentiments_model.predict(vec.transform(pd.Series(word)))
+        word_doc['sentiment'] = prediction[0]
+        response.append(word_doc)
+    return jsonify(response)
 
 
 if __name__ == '__main__':

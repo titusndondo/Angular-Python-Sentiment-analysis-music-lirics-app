@@ -20,6 +20,7 @@ import { NumberCardsComponent } from './main/content/artists/artist-item/artist/
 import { ArtistProfileComponent } from './main/content/artists/artist-item/artist/artist-profile/artist-profile.component';
 import { HBarSComponent } from './main/content/artists/artist-item/artist/artist-profile/h-bar-s/h-bar-s.component';
 import { LineComponent } from './main/content/artists/artist-item/artist/line/line.component';
+import { WordcloudComponent } from './main/content/artists/artist-item/artist/wordcloud/wordcloud.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { LineComponent } from './main/content/artists/artist-item/artist/line/li
     ArtistProfileComponent,
     HBarSComponent,
     LineComponent,
+    WordcloudComponent,
   ],
   imports: [
     BrowserModule,

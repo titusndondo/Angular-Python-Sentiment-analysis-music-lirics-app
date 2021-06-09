@@ -16,6 +16,9 @@
   border-radius: 0 25px 25px 0;
 }
 
+.main-container {
+  position: relative;
+}
 #content {
   width: 90%;
   height: 900px;

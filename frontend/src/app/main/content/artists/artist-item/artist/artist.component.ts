@@ -12,12 +12,10 @@ import { DataService } from 'src/app/main/services/data.service';
 })
 export class ArtistComponent implements OnInit {
   artistDoc: any;
-
   numberCardsData: any;
-
   audioFeaturesData: any;
-
   albumsLineChartData: any;
+  wordCloudData: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +33,7 @@ export class ArtistComponent implements OnInit {
           // console.log(response);
           this.artistDoc = response;
 
+          // get numbercards data
           this.numberCardsData = [
             { name: 'Followers', value: response.followers },
             { name: 'Popularity', value: response.popularity },
@@ -47,20 +46,12 @@ export class ArtistComponent implements OnInit {
             },
           ];
 
+          // get linechart data
           let albumsLineChartData: any = [];
+          let wordCloudData: any = [];
           let afs: any[] = [];
           response.albums.map((album: any) => {
             // console.log(album);
-
-            const highest = (arr: any) =>
-              (arr || []).reduce(
-                (acc: any, el: any) => {
-                  acc.k[el] = acc.k[el] ? acc.k[el] + 1 : 1;
-                  acc.max = acc.max ? (acc.max < acc.k[el] ? el : acc.max) : el;
-                  return acc;
-                },
-                { k: {} }
-              ).max;
 
             const sentimentCounts: any = [
               { sentiment: 'angry', count: 0 },
@@ -85,26 +76,8 @@ export class ArtistComponent implements OnInit {
               );
             });
 
-            // sentiments.forEach((sentiment: any) => {
-            //   if (sentiment === 'angry') sentimentCounts.angry += 1;
-            //   if (sentiment === 'sad') sentimentCounts.sad += 1;
-            //   if (sentiment === 'happy') sentimentCounts.happy += 1;
-            //   if (sentiment === 'relaxed') sentimentCounts.relaxed += 1;
-            // });
-
-            // const mostFrequentSentiment = highest(sentiments);
-            const frequencyPercentage =
-              (sentimentCounts[mostFrequentSentiment] / sentiments.length) *
-              100;
-
-            // console.log(
-            //   sentimentCounts,
-            //   sentiments,
-            //   mostFrequentSentiment.sentiment,
-            //   mostFrequentSentiment.count / sentiments.length
-            // );
-
             const albumData = {
+              album_id: album['id'],
               name: album['name'],
               release_date: album['release_date']
                 ? new Date(album['release_date'])
@@ -118,6 +91,12 @@ export class ArtistComponent implements OnInit {
             album.tracks.map((track: any) => {
               // console.log(track.audio_features);
               afs.push(track.audio_features);
+            });
+
+            // get wordcloud data
+            album.tracks.map((track: any) => {
+              // console.log(track.sentiment);
+              wordCloudData.push(track.sentiment);
             });
           });
 
@@ -151,15 +130,15 @@ export class ArtistComponent implements OnInit {
           audioFeatures = audioFeatures.filter(
             (d: any) => d.series[0].name !== 'tempo'
           );
-          this.dataService.audioFeatures = audioFeatures;
           this.audioFeaturesData = audioFeatures;
 
           // console.log(albumsLineChartData);
           albumsLineChartData = albumsLineChartData.filter(
             (d: any) => d.release_date
           );
-          this.dataService.albumsLineChartData = albumsLineChartData;
           this.albumsLineChartData = albumsLineChartData;
+
+          this.wordCloudData = wordCloudData;
 
           this.breadcrumbService.breadCrumbStatusSubject.next({
             name: response.name,
