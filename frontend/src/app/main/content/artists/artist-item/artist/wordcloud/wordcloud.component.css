@@ -4,3 +4,14 @@
   height: 100%;
   border-radius: 1.5rem;
 }
+
+.wordcloud-row-in {
+  height: 100%;
+}
+
+.line-legend-wrapper {
+  background-color: #1b1e27;
+  width: 100%;
+  height: 100%;
+  border-radius: 0 1.5rem 1.5rem 0;
+}

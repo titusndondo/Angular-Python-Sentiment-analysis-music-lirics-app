@@ -1,10 +1,12 @@
 <div class="container-fluid">
-  <app-artist-profile [audioFeaturesData]="audioFeaturesData"></app-artist-profile>
-  <div class="row row-cols-1 no-gutters">
-    <div class="col">
-      <div>
-        <p class="display-4 text-light ">{{ artistDoc.name }}</p>
-      </div>
+  <div>
+    <app-artist-profile [audioFeaturesData]="audioFeaturesData"></app-artist-profile>
+  </div>
+  <div>
+    <p class="display-4 text-light ">{{ artistDoc.name }}</p>
+  </div>
+  <div class="row">
+    <div class="col-12">
       <div class="cards">
         <app-number-cards [numberCardsData]="numberCardsData"></app-number-cards>
       </div>
@@ -14,7 +16,7 @@
         <app-line [albumsLineChartData]="albumsLineChartData"></app-line>
       </div>
     </div>
-    <div class="col-9">
+    <div class="col-12">
       <div class="wordcloud-row">
         <app-wordcloud [wordCloudData]="wordCloudData"></app-wordcloud>
       </div>
@@ -22,4 +24,22 @@
   </div>
 </div>
 
-
+<!-- <div class="row">
+  <div class="col">
+    <div class="col mb-2">
+      <app-artist-profile [audioFeaturesData]="audioFeaturesData"></app-artist-profile>
+    </div>
+    <div class="col mb-4">
+      <p class="display-5 text-light ">{{ artistDoc.name }}</p>
+    </div>
+    <div class="col cards">
+      <app-number-cards [numberCardsData]="numberCardsData"></app-number-cards>
+    </div>
+    <div class="col lines-row">
+      <app-line [albumsLineChartData]="albumsLineChartData"></app-line>
+    </div>
+    <div class="col wordcloud-row">
+      <app-wordcloud [wordCloudData]="wordCloudData"></app-wordcloud>
+    </div>
+  </div>
+</div> -->

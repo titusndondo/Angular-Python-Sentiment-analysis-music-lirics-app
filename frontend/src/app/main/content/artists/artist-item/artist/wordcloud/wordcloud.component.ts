@@ -65,13 +65,19 @@ export class WordcloudComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     // console.log(this.wordCounts);
+    // console.log('Initial render wordcloud');
+    this.wordCloudPlot.plotWordCloud(this.wordCounts, {
+      width: 100,
+      height: 100,
+    });
   }
 
   ngAfterViewInit() {
     this.resizeObserverService.observeElement(this.wordcloud_wrapper);
     this.resizeObserverService.resizeSubject.subscribe((dimensions: any) => {
+      // console.log('Wordcloud Size changed');
       this.dimensions = dimensions;
-      console.log('Wordcloud', dimensions);
+      // console.log('Wordcloud', dimensions);
       // console.log(this.albumsLineChartData);
       this.wordCloudPlot.plotWordCloud(this.wordCounts, this.dimensions);
     });
