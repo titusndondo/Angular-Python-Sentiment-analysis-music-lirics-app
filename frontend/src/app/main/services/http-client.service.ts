@@ -12,7 +12,9 @@ export class HttpClientService {
   }
 
   paginate(pageNumber: number) {
-    return this.httpClient.get(`${this.baseUrl}artists/page/${pageNumber}`);
+    if (pageNumber)
+      return this.httpClient.get(`${this.baseUrl}artists/page/${pageNumber}`);
+    return this.httpClient.get(`${this.baseUrl}artists/page/${1}`);
   }
 
   getAllArtists() {

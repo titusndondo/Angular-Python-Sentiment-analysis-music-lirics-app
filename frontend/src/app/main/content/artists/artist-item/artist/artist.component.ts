@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { BreadCrumbService } from 'src/app/main/services/breadcrumb.service';
 import { HttpClientService } from 'src/app/main/services/http-client.service';
 import * as d3 from 'd3';
-import { DataService } from 'src/app/main/services/data.service';
 
 @Component({
   selector: 'app-artist',
@@ -20,8 +19,7 @@ export class ArtistComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private httpClientService: HttpClientService,
-    private breadcrumbService: BreadCrumbService,
-    private dataService: DataService
+    private breadcrumbService: BreadCrumbService
   ) {}
 
   ngOnInit(): void {

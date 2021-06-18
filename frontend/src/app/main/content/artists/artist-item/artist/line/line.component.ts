@@ -25,7 +25,6 @@ export class LineComponent
   @Input() albumsLineChartData: any;
 
   dimensions!: { width: number; height: number };
-  numberOfRenders = 0;
 
   constructor(
     private dataService: DataService,
@@ -33,30 +32,18 @@ export class LineComponent
     private resizeObserverService: ResizeObserverService
   ) {}
 
-  ngOnInit(): void {
-    console.log('Initial render Line');
-
-    this.lineChartPlot.plotLineChart(this.albumsLineChartData, {
-      width: 100,
-      height: 100,
-    });
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
-    // console.log(this.line_chart_wrapper.nativeElement);
     this.resizeObserverService.observeElement(this.line_chart_wrapper);
     this.resizeObserverService.resizeSubject.subscribe((dimensions: any) => {
-      if (this.numberOfRenders === 0) {
-        console.log(this.numberOfRenders);
-        console.log('Line Size changed');
+      if (dimensions.target === this.line_chart_wrapper.nativeElement) {
         this.dimensions = dimensions;
-        console.log('Line', dimensions);
-        // console.log(this.albumsLineChartData);
+        // console.log('Line', this.dimensions);
         this.lineChartPlot.plotLineChart(
           this.albumsLineChartData,
           this.dimensions
         );
-        this.numberOfRenders += 1;
       }
     });
   }
@@ -67,6 +54,6 @@ export class LineComponent
   }
 
   ngOnDestroy() {
-    this.resizeObserverService.resizeSubject.unsubscribe();
+    // this.resizeObserverService.resizeSubject.unsubscribe();
   }
 }

@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -16,9 +17,12 @@ import { WordcloudPlotService } from 'src/app/main/services/wordcloud.plot.servi
   templateUrl: './wordcloud.component.html',
   styleUrls: ['./wordcloud.component.css'],
 })
-export class WordcloudComponent implements OnInit, AfterViewInit, OnDestroy {
+export class WordcloudComponent
+  implements OnInit, AfterViewInit, OnDestroy, OnChanges
+{
   @Input() wordCloudData: any;
   @ViewChild('wordcloud_wrapper') wordcloud_wrapper!: ElementRef;
+  @ViewChild('legendWrapper') legendWrapper!: ElementRef;
   wordCounts: any = [];
   dimensions!: { width: number; height: number };
 
@@ -59,31 +63,32 @@ export class WordcloudComponent implements OnInit, AfterViewInit, OnDestroy {
         .map((d: any) => {
           return { ...d, ...{ freq: (d.count / counts.length) * 100 } };
         })
-        .sort((a: { freq: number }, b: { freq: number }) => b.freq - a.freq);
+        .sort((a: { freq: number }, b: { freq: number }) => b.freq - a.freq)
+        .filter((d: any) => d.freq <= 50);
       // console.log(counts.slice(0, 100));
-      this.wordCounts = [...this.wordCounts, ...counts.slice(0, 100)];
+      this.wordCounts = [...this.wordCounts, ...counts.slice(0, 50)];
     });
 
     // console.log(this.wordCounts);
-    // console.log('Initial render wordcloud');
-    this.wordCloudPlot.plotWordCloud(this.wordCounts, {
-      width: 100,
-      height: 100,
-    });
   }
 
   ngAfterViewInit() {
     this.resizeObserverService.observeElement(this.wordcloud_wrapper);
     this.resizeObserverService.resizeSubject.subscribe((dimensions: any) => {
-      // console.log('Wordcloud Size changed');
       this.dimensions = dimensions;
-      // console.log('Wordcloud', dimensions);
-      // console.log(this.albumsLineChartData);
-      this.wordCloudPlot.plotWordCloud(this.wordCounts, this.dimensions);
+      if (dimensions.target === this.wordcloud_wrapper.nativeElement) {
+        // console.log('Wordcloud', this.dimensions);
+        // console.log(this.wordCounts);
+        this.wordCloudPlot.plotWordCloud(this.wordCounts, this.dimensions);
+      }
     });
   }
 
+  ngOnChanges() {
+    this.wordCloudPlot.plotWordCloud(this.wordCounts, this.dimensions);
+  }
+
   ngOnDestroy() {
-    this.resizeObserverService.resizeSubject.unsubscribe();
+    // this.resizeObserverService.resizeSubject.unsubscribe();
   }
 }

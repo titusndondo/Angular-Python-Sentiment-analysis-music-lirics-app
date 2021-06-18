@@ -40,11 +40,6 @@ export class HorizontalBarComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // console.log(this.multi);
-
-    this.dataService.audioFeaturesTransferSubject.subscribe((response: any) => {
-      console.log(response);
-      // this.multi = response;
-    });
   }
 
   ngAfterViewInit() {

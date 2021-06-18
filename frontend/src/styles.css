@@ -39,12 +39,6 @@ g.y-axis text {
   color: #f1f1f1 !important;
 }
 
-.artist-albums-circle {
-  /* cursor: pointer; */
-  /* transition: r 0.5s; */
+g.axis-mute {
+  opacity: 0;
 }
-
-/* .artist-albums-circle:hover {
-  r: 30;
-  z-index: 1000000;
-} */

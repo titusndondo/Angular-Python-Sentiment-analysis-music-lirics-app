@@ -31,6 +31,6 @@ export class ResizeObserverService {
       });
     });
 
-    return resizeObserver.observe(element.nativeElement);
+    resizeObserver.observe(element.nativeElement);
   }
 }
