@@ -47,6 +47,7 @@
   width: 100% !important;
   height: 30rem;
   overflow-y: scroll;
+  overflow-x: auto;
   border-radius: 10px;
   z-index: 10000;
 }

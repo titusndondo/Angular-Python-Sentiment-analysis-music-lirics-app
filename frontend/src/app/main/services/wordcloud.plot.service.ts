@@ -11,13 +11,6 @@ export class WordcloudPlotService {
   plotWordCloud(data: any, dimensions: any) {
     if (!dimensions?.width) return;
 
-    const legendAttributes: any = [
-      { sentiment: 'Sad', color: '#00A489', value: 50 },
-      { sentiment: 'Angry', color: '#00727F', value: 65 },
-      { sentiment: 'Happy', color: '#F9F871', value: 68 },
-      { sentiment: 'Relaxed', color: '#82D37C', value: 75 },
-    ];
-
     const continentColor = scaleOrdinal([
       '#00A489',
       '#00727F',
@@ -42,27 +35,25 @@ export class WordcloudPlotService {
     const yAxis: any = axisLeft(yScale);
     chartSvg.select('.y-axis').call(yAxis);
 
-    data.forEach((d: any) => {
-      d.x = Math.floor(Math.random() * 100);
-      d.y = Math.floor(Math.random() * 100);
-    });
-    console.log(data);
+    // console.log(data);
+
+    select('.word-circles').remove();
 
     const circleGroups = chartSvg
       .append('g')
       .attr('class', 'word-circles')
-      .selectAll('.circle')
+      .selectAll('.circle-group')
       .data(data)
       .join('g')
       .attr('class', 'circle-group');
 
-    const circles = circleGroups
-      .append('circle')
-      .attr('class', 'word-circle')
-      .attr('cx', (d: any) => xScale(d.x))
-      .attr('cy', (d: any) => yScale(d.y))
-      .attr('r', (d: any) => d.freq * 2)
-      .attr('fill', (d: any) => continentColor(d.sentiment));
+    // const circles = circleGroups
+    //   .append('circle')
+    //   .attr('class', 'word-circle')
+    //   .attr('cx', (d: any) => xScale(d.x))
+    //   .attr('cy', (d: any) => yScale(d.y))
+    //   .attr('r', (d: any) => d.freq * 2)
+    //   .attr('fill', (d: any) => continentColor(d.sentiment));
 
     circleGroups
       .append('text')
@@ -70,7 +61,7 @@ export class WordcloudPlotService {
       .attr('dy', (d: any) => yScale(d.y))
       .text((d: any) => d.word)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#f1f1f1')
+      .attr('fill', (d: any) => continentColor(d.sentiment)) //'#1b1e27'
       .style('font-weight', '100')
       .style('font-size', (d: any) => d.freq * 2);
 

@@ -27,18 +27,43 @@ export class WordcloudComponent
   dimensions!: { width: number; height: number };
 
   constructor(
-    private httpClient: HttpClientService,
     private wordCloudPlot: WordcloudPlotService,
     private resizeObserverService: ResizeObserverService
   ) {}
 
   ngOnInit(): void {
     // console.log(this.wordCloudData);
+    // this.dataPrep();
+    // console.log(this.wordCounts);
+  }
+
+  ngAfterViewInit() {
+    this.resizeObserverService.observeElement(this.wordcloud_wrapper);
+    this.resizeObserverService.resizeSubject.subscribe((dimensions: any) => {
+      if (dimensions.target === this.wordcloud_wrapper.nativeElement) {
+        this.dimensions = dimensions;
+        // console.log('Wordcloud', this.dimensions);
+        // console.log(this.wordCounts);
+        this.wordCloudPlot.plotWordCloud(this.wordCounts, this.dimensions);
+      }
+    });
+  }
+
+  ngOnChanges() {
+    this.dataPrep();
+    this.wordCloudPlot.plotWordCloud(this.wordCounts, this.dimensions);
+  }
+
+  ngOnDestroy() {
+    // this.resizeObserverService.resizeSubject.unsubscribe();
+  }
+
+  dataPrep() {
     const sentiments = ['sad', 'angry', 'happy', 'relaxed'];
+    this.wordCounts = [];
 
     sentiments.forEach((sentiment: string) => {
       let counts: any = [];
-      // let sentiment = 'angry';
       const giantStringOfWords: string = this.wordCloudData
         .filter((d: any) => d.sentiment === sentiment)
         .map((d: any) => d.lyrics)
@@ -64,31 +89,16 @@ export class WordcloudComponent
           return { ...d, ...{ freq: (d.count / counts.length) * 100 } };
         })
         .sort((a: { freq: number }, b: { freq: number }) => b.freq - a.freq)
-        .filter((d: any) => d.freq <= 50);
-      // console.log(counts.slice(0, 100));
-      this.wordCounts = [...this.wordCounts, ...counts.slice(0, 50)];
+        .filter((d: any) => d.freq <= 100);
+      // console.log(counts.slice(0, 1));
+      this.wordCounts = [...this.wordCounts, ...counts];
+      this.wordCounts.forEach((d: any) => {
+        d.x = Math.floor(Math.random() * 100);
+        d.y = Math.floor(Math.random() * 100);
+      });
+      this.wordCounts = this.wordCounts
+        .sort((a: { freq: number }, b: { freq: number }) => b.freq - a.freq)
+        .slice(0, 50);
     });
-
-    // console.log(this.wordCounts);
-  }
-
-  ngAfterViewInit() {
-    this.resizeObserverService.observeElement(this.wordcloud_wrapper);
-    this.resizeObserverService.resizeSubject.subscribe((dimensions: any) => {
-      this.dimensions = dimensions;
-      if (dimensions.target === this.wordcloud_wrapper.nativeElement) {
-        // console.log('Wordcloud', this.dimensions);
-        // console.log(this.wordCounts);
-        this.wordCloudPlot.plotWordCloud(this.wordCounts, this.dimensions);
-      }
-    });
-  }
-
-  ngOnChanges() {
-    this.wordCloudPlot.plotWordCloud(this.wordCounts, this.dimensions);
-  }
-
-  ngOnDestroy() {
-    // this.resizeObserverService.resizeSubject.unsubscribe();
   }
 }

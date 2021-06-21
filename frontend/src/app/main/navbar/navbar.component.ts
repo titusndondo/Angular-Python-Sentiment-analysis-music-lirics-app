@@ -36,7 +36,7 @@ export class NavbarComponent implements OnInit {
         this.httpClient.getAllArtists().subscribe((response: any) => {
           // console.log(response);
           this.allArtists = response.filter((artistName: any) => {
-            return artistName.name.startsWith(name);
+            return artistName.name.toLowerCase().startsWith(name.toLowerCase());
           });
           // console.log(this.allArtists);
         });
@@ -56,6 +56,7 @@ export class NavbarComponent implements OnInit {
   onViewArtist(e: Event, item: any) {
     e.preventDefault();
     this.showSearchPopup = false;
+
     // console.log('More requested');
     // console.log(item);
   }
